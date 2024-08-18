@@ -1,33 +1,135 @@
-# Gradle files
+# --- General Kotlin/Java files ---
+*.iml
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.hprof
+*.idea/
+*.gradle
+*.out/
+build/
+.gradle/
+.idea/
+.gradle-cache/
+*.kts
+*.DS_Store
+
+# --- Gradle Files ---
 .gradle/
 build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
 
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Log/OS Files
-*.log
-
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
+# --- Android ---
+/app/build/
+/app/.cxx/
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/misc.xml
 *.apk
-output.json
-
-# IntelliJ
-*.iml
+*.ap_
+/*.iml
+/launch/
+.idea/libraries/
+/.idea/assetWizardSettings.xml
+/.idea/compiler.xml
+/.idea/dictionaries/
+/.idea/copyright/
+.idea/caches/
+/.idea/gradle.xml
+/.idea/vcs.xml
+/.idea/modules/
+.gradle
 .idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
+.idea/vcs.xml
+/app/build/
+*/build/
+*.iml
+.gradle/
+local.properties
+**/generated/*
+!gradle-wrapper.jar
+!gradle-wrapper.properties
 
-# Keystore files
-*.jks
-*.keystore
+# --- Xcode (iOS) ---
+# User-specific files
+xcuserdata/
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+# User-specific settings
+*.xcuserstate
 
-# Android Profiling
-*.hprof
+# Build products
+build/
+DerivedData/
+
+# Other
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata
+
+# Xcode automatic backup files
+*.moved-aside
+*.xcuserstate
+
+# --- macOS ---
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# --- JetBrains IDEs ---
+.idea/
+.idea_modules/
+*.iws
+*.iml
+*.ipr
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# --- VS Code ---
+.vscode/
+
+# --- Caches ---
+/.gradle/
+/build/
+/.idea/
+/out/
+/*.iml
+/local.properties
+/.cxx/
+
+# --- KMP-specific ---
+/shared/build/
+/androidApp/build/
+/iosApp/build/
+/desktopApp/build/
+/webApp/build/
