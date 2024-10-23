@@ -11,7 +11,7 @@ import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepositoryImpl
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepositoryImpl
-import com.jetbrains.moneygenie.screens.addRecipient.AddRecipientScreenModel
+import com.jetbrains.moneygenie.screens.recipients.AddRecipientScreenModel
 import com.jetbrains.moneygenie.screens.detail.DetailScreenModel
 import com.jetbrains.moneygenie.screens.home.HomeScreenModel
 import com.jetbrains.moneygenie.screens.list.ListScreenModel

@@ -1,4 +1,4 @@
-package com.jetbrains.moneygenie.screens.addRecipient
+package com.jetbrains.moneygenie.screens.recipients
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

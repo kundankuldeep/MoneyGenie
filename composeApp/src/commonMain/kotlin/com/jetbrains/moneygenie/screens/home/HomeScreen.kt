@@ -30,7 +30,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jetbrains.moneygenie.composableCollection.LottieView
 import com.jetbrains.moneygenie.composableCollection.MainAppBar
 import com.jetbrains.moneygenie.data.models.Recipient
-import com.jetbrains.moneygenie.screens.addRecipient.AddRecipientScreen
+import com.jetbrains.moneygenie.screens.recipients.AddRecipientScreen
 import com.jetbrains.moneygenie.screens.components.GradientIconButton
 import com.jetbrains.moneygenie.theme.Color_N200
 import com.jetbrains.moneygenie.theme.MGTypography

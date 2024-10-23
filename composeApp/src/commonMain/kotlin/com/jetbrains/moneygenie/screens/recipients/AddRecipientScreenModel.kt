@@ -1,4 +1,4 @@
-package com.jetbrains.moneygenie.screens.addRecipient
+package com.jetbrains.moneygenie.screens.recipients
 
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel

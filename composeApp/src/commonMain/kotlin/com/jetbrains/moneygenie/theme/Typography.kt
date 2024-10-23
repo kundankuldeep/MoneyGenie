@@ -7,10 +7,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import moneygenie.composeapp.generated.resources.Res
-import moneygenie.composeapp.generated.resources.raleway_bold
-import moneygenie.composeapp.generated.resources.raleway_medium
-import moneygenie.composeapp.generated.resources.raleway_regular
-import moneygenie.composeapp.generated.resources.raleway_semi_bold
+import moneygenie.composeapp.generated.resources.roboto_black
+import moneygenie.composeapp.generated.resources.roboto_bold
+import moneygenie.composeapp.generated.resources.roboto_medium
+import moneygenie.composeapp.generated.resources.roboto_regular
 import org.jetbrains.compose.resources.Font
 
 /**
@@ -18,16 +18,16 @@ import org.jetbrains.compose.resources.Font
  **/
 
 @Composable
-fun raleway() = FontFamily(
-    Font(Res.font.raleway_regular, FontWeight.Normal),
-    Font(Res.font.raleway_medium, FontWeight.Medium),
-    Font(Res.font.raleway_semi_bold, FontWeight.SemiBold),
-    Font(Res.font.raleway_bold, FontWeight.Bold),
+fun roboto() = FontFamily(
+    Font(Res.font.roboto_regular, FontWeight.Normal),
+    Font(Res.font.roboto_medium, FontWeight.Medium),
+    Font(Res.font.roboto_bold, FontWeight.SemiBold),
+    Font(Res.font.roboto_black, FontWeight.Bold),
 )
 
 @Composable
 fun defaultFont(): FontFamily {
-    return raleway()
+    return roboto()
 }
 
 data class CustomTypography(
