@@ -15,8 +15,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,6 +31,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jetbrains.moneygenie.data.MuseumObject
 import com.jetbrains.moneygenie.screens.EmptyScreenContent
 import com.jetbrains.moneygenie.screens.detail.DetailScreen
+import com.jetbrains.moneygenie.theme.MGTypography
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 
@@ -64,7 +64,7 @@ private fun ObjectGrid(
     onObjectClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyRow() {  }
+    LazyRow() { }
     LazyVerticalGrid(
         columns = GridCells.Adaptive(180.dp),
         modifier = modifier.fillMaxSize(),
@@ -102,8 +102,8 @@ private fun ObjectFrame(
 
         Spacer(Modifier.height(2.dp))
 
-        Text(obj.title, style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold))
-        Text(obj.artistDisplayName, style = MaterialTheme.typography.body2)
-        Text(obj.objectDate, style = MaterialTheme.typography.caption)
+        Text(obj.title, style = MGTypography().titleBold.copy(fontWeight = FontWeight.Bold))
+        Text(obj.artistDisplayName, style = MGTypography().titleBold)
+        Text(obj.objectDate, style = MGTypography().titleBold)
     }
 }

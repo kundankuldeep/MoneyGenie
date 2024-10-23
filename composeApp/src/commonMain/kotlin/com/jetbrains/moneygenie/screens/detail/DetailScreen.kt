@@ -11,14 +11,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,7 +34,6 @@ import com.jetbrains.moneygenie.screens.EmptyScreenContent
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import moneygenie.composeapp.generated.resources.Res
-import moneygenie.composeapp.generated.resources.back
 import moneygenie.composeapp.generated.resources.label_artist
 import moneygenie.composeapp.generated.resources.label_credits
 import moneygenie.composeapp.generated.resources.label_date
@@ -77,11 +71,7 @@ private fun ObjectDetails(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(backgroundColor = Color.White) {
-                IconButton(onClick = onBackClick) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(Res.string.back))
-                }
-            }
+
         },
         modifier = modifier,
     ) { paddingValues ->
@@ -103,7 +93,7 @@ private fun ObjectDetails(
                 Column(Modifier.padding(12.dp)) {
                     Text(
                         obj.title,
-                        style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Bold)
                     )
                     Spacer(Modifier.height(6.dp))
                     LabeledInfo(stringResource(Res.string.label_title), obj.title)

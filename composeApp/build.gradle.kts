@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.realm.plugin)
 }
 
 kotlin {
@@ -41,7 +42,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -53,7 +54,22 @@ kotlin {
             implementation(libs.kamel)
             implementation(libs.koin.core)
             implementation(libs.voyager.navigator)
+            implementation(libs.voyager.navigator.transitions)
+            implementation(libs.voyager.navigator.screen.model)
+            implementation(libs.voyager.navigator)
             implementation(libs.voyager.koin)
+
+            // Mongo db
+            implementation(libs.mongodb.realm)
+
+
+            // Date time
+            implementation(libs.kotlinx.datetime)
+
+            // Animation lib for lottie
+            implementation(libs.compottie)
+            implementation(libs.compottie.dot)
+            implementation(libs.compottie.network)
         }
     }
 }

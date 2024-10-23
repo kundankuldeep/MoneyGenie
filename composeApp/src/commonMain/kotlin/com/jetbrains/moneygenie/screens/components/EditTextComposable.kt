@@ -2,10 +2,9 @@ package com.jetbrains.moneygenie.screens.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,8 +28,6 @@ fun CustomTextField(
     backgroundColor: Color = Color.White
 ) {
     Card(
-        backgroundColor = backgroundColor,
-        elevation = 4.dp,
         shape = RoundedCornerShape(5.dp)
     ) {
         TextField(
@@ -46,11 +43,6 @@ fun CustomTextField(
             singleLine = singleLine,
             textStyle = textStyle,
             modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
-            )
         )
     }
 }

@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,14 +21,15 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jetbrains.moneygenie.screens.components.CustomTextField
-import com.jetbrains.moneygenie.screens.components.GradientCircleButton
+import com.jetbrains.moneygenie.screens.components.GradientIconButton
 import com.jetbrains.moneygenie.screens.components.SelectableChip
+import com.jetbrains.moneygenie.screens.home.HomeScreen
 import com.jetbrains.moneygenie.screens.list.ListScreen
 
 /**
  * Created by Kundan on 18/08/24
  **/
-data object OnBoardingScreen : Screen {
+class OnBoardingScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -34,11 +37,10 @@ data object OnBoardingScreen : Screen {
 
         // check if user is logged in or not
         if (screenModel.isLoggedIn()) {
-            navigator.push(ListScreen)
+            navigator.replace(ListScreen)
         } else {
-            OnBoardingContent()
+            navigator.replace(HomeScreen)
         }
-
     }
 
     @Composable
@@ -55,11 +57,7 @@ data object OnBoardingScreen : Screen {
                     placeholder = "Enter your name"
                 )
                 GenderSelectionChipGroup()
-                GradientCircleButton(
-                    onClick = {
-                        // Handle the button click
-                    }
-                )
+                GradientIconButton(icon = Icons.Rounded.Add)
             }
         }
     }
