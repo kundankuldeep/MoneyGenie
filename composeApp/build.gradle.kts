@@ -54,9 +54,9 @@ kotlin {
             implementation(libs.kamel)
             implementation(libs.koin.core)
             implementation(libs.voyager.navigator)
+            implementation(libs.voyager.bottom.sheet.navigator)
             implementation(libs.voyager.navigator.transitions)
             implementation(libs.voyager.navigator.screen.model)
-            implementation(libs.voyager.navigator)
             implementation(libs.voyager.koin)
 
             // Mongo db
@@ -70,6 +70,9 @@ kotlin {
             implementation(libs.compottie)
             implementation(libs.compottie.dot)
             implementation(libs.compottie.network)
+
+            api(libs.datastore.preferences)
+            api(libs.datastore.core)
         }
     }
 }

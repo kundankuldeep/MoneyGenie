@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="label_title">Title</string>
-    <string name="label_artist">Artist</string>
-    <string name="label_date">Date</string>
-    <string name="label_dimensions">Dimensions</string>
-    <string name="label_medium">Medium</string>
-    <string name="label_department">Department</string>
-    <string name="label_repository">Repository</string>
-    <string name="label_credits">Credits</string>
-
     <string name="back">Back</string>
     <string name="dashboard">Dashboard</string>
 
     <string name="no_data_available">No data available</string>
+    <string name="crawl_1_title">Manage Transactions</string>
+    <string name="crawl_1_sub_title">Keep track of who you owe money to and who owes you.</string>
+    <string name="crawl_2_title">Manage Recipients</string>
+    <string name="crawl_2_sub_title">Create a list of friends and family to track your give-and-take.</string>
+    <string name="crawl_3_title">Get Insights</string>
+    <string name="crawl_3_sub_title">View your total lend/borrow amounts at a glance.</string>
+    <string name="crawl_4_title">Send Reminders</string>
+    <string name="crawl_4_sub_title">Keep everyone updated without annoying notifications.</string>
+
+    <string name="add_recipient_title">Add Recipient</string>
+    <string name="add_recipient_sub_title">Add details for the recipient to track your transactions. You can also provide optional contact information.</string>
+    <string name="add_outstanding_balance">Add an initial balance if there's an outstanding amount.</string>
 </resources>

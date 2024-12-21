@@ -10,10 +10,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,17 +29,17 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
+import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
+import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.jetbrains.moneygenie.composableCollection.LottieView
-import com.jetbrains.moneygenie.composableCollection.MainAppBar
+import com.jetbrains.moneygenie.components.LottieView
+import com.jetbrains.moneygenie.components.MainAppBar
+import com.jetbrains.moneygenie.components.GradientIconButton
 import com.jetbrains.moneygenie.data.models.Recipient
-import com.jetbrains.moneygenie.screens.recipients.AddRecipientScreen
-import com.jetbrains.moneygenie.screens.components.GradientIconButton
+import com.jetbrains.moneygenie.screens.addRecipients.AddRecipientScreen
+import com.jetbrains.moneygenie.screens.bottomSheets.HomeOptionsBS
 import com.jetbrains.moneygenie.theme.Color_N200
 import com.jetbrains.moneygenie.theme.MGTypography
-import moneygenie.composeapp.generated.resources.Res
-import moneygenie.composeapp.generated.resources.dashboard
-import org.jetbrains.compose.resources.stringResource
 
 /**
  * Created by Kundan on 26/09/24
@@ -45,23 +48,37 @@ data object HomeScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+
         val screenModel: HomeScreenModel = getScreenModel()
-        HomeScreenComposable(screenModel, navigator)
+        HomeScreenComposable(screenModel, navigator, bottomSheetNavigator)
     }
 }
 
 @Composable
-fun HomeScreenComposable(screenModel: HomeScreenModel, navigator: Navigator) {
+fun HomeScreenComposable(
+    screenModel: HomeScreenModel,
+    navigator: Navigator,
+    bottomSheetNavigator: BottomSheetNavigator
+) {
     Scaffold(
         topBar = {
-            MainAppBar {
-                Text(
-                    stringResource(Res.string.dashboard),
-                    color = Color.White,
-                    style = MGTypography().headingBold,
-                    modifier = Modifier.padding(start = 16.dp)
-                )
-            }
+            MainAppBar(
+                navigator,
+                "Hi Kundan!",
+                showProfileIcon = true,
+                actions = {
+                    IconButton(onClick = {
+                        bottomSheetNavigator.show(HomeOptionsBS(navigator))
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "More Icon",
+                            tint = Color.White
+                        )
+                    }
+                }
+            )
         },
         floatingActionButton = {
             FloatingActionButton(

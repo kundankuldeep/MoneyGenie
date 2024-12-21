@@ -1,21 +1,16 @@
 package com.jetbrains.moneygenie.di
 
-import com.jetbrains.moneygenie.data.InMemoryMuseumStorage
-import com.jetbrains.moneygenie.data.KtorMuseumApi
-import com.jetbrains.moneygenie.data.MuseumApi
-import com.jetbrains.moneygenie.data.MuseumRepository
-import com.jetbrains.moneygenie.data.MuseumStorage
 import com.jetbrains.moneygenie.data.local.RealmManager
 import com.jetbrains.moneygenie.data.local.RealmManagerImpl
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepositoryImpl
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepositoryImpl
-import com.jetbrains.moneygenie.screens.recipients.AddRecipientScreenModel
-import com.jetbrains.moneygenie.screens.detail.DetailScreenModel
+import com.jetbrains.moneygenie.screens.addRecipients.AddRecipientScreenModel
+import com.jetbrains.moneygenie.screens.authentication.SignUpScreenModel
 import com.jetbrains.moneygenie.screens.home.HomeScreenModel
-import com.jetbrains.moneygenie.screens.list.ListScreenModel
 import com.jetbrains.moneygenie.screens.onboarding.OnBoardingScreenModel
+import com.jetbrains.moneygenie.screens.settings.SettingsScreenModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
@@ -33,14 +28,6 @@ val dataModule = module {
                 // TODO Fix API so it serves application/json
                 json(json, contentType = ContentType.Any)
             }
-        }
-    }
-
-    single<MuseumApi> { KtorMuseumApi(get()) }
-    single<MuseumStorage> { InMemoryMuseumStorage() }
-    single {
-        MuseumRepository(get(), get()).apply {
-            initialize()
         }
     }
 
@@ -63,11 +50,11 @@ val dataModule = module {
 }
 
 val screenModelsModule = module {
-    factoryOf(::ListScreenModel)
     factoryOf(::OnBoardingScreenModel)
-    factoryOf(::DetailScreenModel)
     factoryOf(::HomeScreenModel)
     factoryOf(::AddRecipientScreenModel)
+    factoryOf(::SignUpScreenModel)
+    factoryOf(::SettingsScreenModel)
 }
 
 fun initKoin() {
