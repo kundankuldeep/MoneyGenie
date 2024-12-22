@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.jetbrains.moneygenie.theme.Color_P900
+import com.jetbrains.moneygenie.theme.Primary700
 
 /**
  * Created by Kundan on 27/10/24
@@ -23,8 +23,8 @@ import com.jetbrains.moneygenie.theme.Color_P900
 fun CustomPagerIndicator(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
-    activeColor: Color = Color_P900,
-    inactiveColor: Color = Color_P900.copy(alpha = 0.5f),
+    activeColor: Color = Primary700,
+    inactiveColor: Color = Primary700.copy(alpha = 0.5f),
     indicatorWidth: Dp = 8.dp,
     indicatorHeight: Dp = 8.dp,
     spacing: Dp = 4.dp

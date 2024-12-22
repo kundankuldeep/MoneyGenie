@@ -22,8 +22,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
-import com.jetbrains.moneygenie.theme.Color_P900
 import com.jetbrains.moneygenie.theme.MGTypography
+import com.jetbrains.moneygenie.theme.Primary700
 import moneygenie.composeapp.generated.resources.Res
 import moneygenie.composeapp.generated.resources.logo_green
 import org.jetbrains.compose.resources.painterResource
@@ -87,11 +87,11 @@ fun MainAppBar(
         },
         actions = actions ?: {},
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color_P900,
+            containerColor = Primary700,
             titleContentColor = Color.White,
             actionIconContentColor = Color.White,
             navigationIconContentColor = Color.White,
-            scrolledContainerColor = Color_P900
+            scrolledContainerColor = Primary700
         )
     )
 }

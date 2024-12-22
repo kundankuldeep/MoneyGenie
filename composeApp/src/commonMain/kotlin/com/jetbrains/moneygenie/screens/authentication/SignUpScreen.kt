@@ -33,9 +33,9 @@ import com.jetbrains.moneygenie.components.VerticalSpace
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
 import com.jetbrains.moneygenie.screens.home.HomeScreen
-import com.jetbrains.moneygenie.theme.Color_P900
 import com.jetbrains.moneygenie.theme.MGTypography
-import com.jetbrains.moneygenie.theme.NT700
+import com.jetbrains.moneygenie.theme.Natural500
+import com.jetbrains.moneygenie.theme.Primary700
 import kotlinx.coroutines.launch
 import moneygenie.composeapp.generated.resources.Res
 import moneygenie.composeapp.generated.resources.logo_green
@@ -92,7 +92,7 @@ class SignUpScreen : Screen {
                         // screen Title
                         Text(
                             text = "Create Your Account",
-                            color = Color_P900,
+                            color = Primary700,
                             style = MGTypography().titleBoldL
                         )
                         VerticalSpace(10)
@@ -100,7 +100,7 @@ class SignUpScreen : Screen {
                         // screen Title
                         Text(
                             text = "Join MoneyGenie to start tracking your transactions.",
-                            color = NT700,
+                            color = Natural500,
                             style = MGTypography().bodyRegularL
                         )
 

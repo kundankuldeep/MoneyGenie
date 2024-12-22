@@ -35,10 +35,10 @@ import com.jetbrains.moneygenie.components.MGButton
 import com.jetbrains.moneygenie.components.MGButtonType
 import com.jetbrains.moneygenie.components.VerticalSpace
 import com.jetbrains.moneygenie.screens.authentication.SignUpScreen
-import com.jetbrains.moneygenie.theme.Color_P900
 import com.jetbrains.moneygenie.theme.MGTypography
-import com.jetbrains.moneygenie.theme.NT700
-import com.jetbrains.moneygenie.theme.color_border
+import com.jetbrains.moneygenie.theme.Natural100
+import com.jetbrains.moneygenie.theme.Natural500
+import com.jetbrains.moneygenie.theme.Primary700
 import moneygenie.composeapp.generated.resources.Res
 import moneygenie.composeapp.generated.resources.logo_green
 import org.jetbrains.compose.resources.painterResource
@@ -82,7 +82,7 @@ class OnBoardingScreen : Screen {
                     // screen Title
                     Text(
                         text = "Welcome to \nMoneyGenie!",
-                        color = Color_P900,
+                        color = Primary700,
                         style = MGTypography().titleBoldL
                     )
                     VerticalSpace(10)
@@ -90,7 +90,7 @@ class OnBoardingScreen : Screen {
                     // screen Title
                     Text(
                         text = "Your personal finance assistant.",
-                        color = NT700,
+                        color = Natural500,
                         style = MGTypography().bodyRegularL
                     )
 
@@ -144,7 +144,7 @@ fun CrawlerCard(crawlerModel: CrawlerModel?) {
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         modifier = Modifier
             .padding(20.dp)
-            .border(1.dp, color_border, RoundedCornerShape(10.dp))
+            .border(1.dp, Natural100, RoundedCornerShape(10.dp))
     ) {
         Column(
             modifier = Modifier.padding(vertical = 40.dp, horizontal = 20.dp),
@@ -159,7 +159,7 @@ fun CrawlerCard(crawlerModel: CrawlerModel?) {
 
             Text(
                 text = stringResource(crawlerModel.title),
-                color = NT700,
+                color = Natural500,
                 style = MGTypography().titleBold,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -167,7 +167,7 @@ fun CrawlerCard(crawlerModel: CrawlerModel?) {
 
             Text(
                 text = stringResource(crawlerModel.subTitle),
-                color = NT700,
+                color = Natural500,
                 style = MGTypography().bodyRegularL
             )
         }

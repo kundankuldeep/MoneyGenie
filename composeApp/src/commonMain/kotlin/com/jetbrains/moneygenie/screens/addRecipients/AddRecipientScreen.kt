@@ -3,9 +3,7 @@ package com.jetbrains.moneygenie.screens.addRecipients
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,14 +18,18 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.jetbrains.moneygenie.components.GenderSelectionChipGroup
-import com.jetbrains.moneygenie.components.MainAppBar
 import com.jetbrains.moneygenie.components.FloatingLabelEditText
+import com.jetbrains.moneygenie.components.GenderSelectionChipGroup
+import com.jetbrains.moneygenie.components.Genders
+import com.jetbrains.moneygenie.components.MGButton
+import com.jetbrains.moneygenie.components.MainAppBar
+import com.jetbrains.moneygenie.components.OweType
+import com.jetbrains.moneygenie.components.OweTypeChipGroup
 import com.jetbrains.moneygenie.theme.MGTypography
 import moneygenie.composeapp.generated.resources.Res
+import moneygenie.composeapp.generated.resources.add_outstanding_balance
 import moneygenie.composeapp.generated.resources.add_recipient_sub_title
 import moneygenie.composeapp.generated.resources.add_recipient_title
-import moneygenie.composeapp.generated.resources.add_outstanding_balance
 import org.jetbrains.compose.resources.stringResource
 
 /**
@@ -48,7 +50,8 @@ fun AddRecipientComposable(viewModel: AddRecipientScreenModel, navigator: Naviga
     var name by remember { mutableStateOf("") }
     var contact by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var gender by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf<Genders?>(null) }
+    var owedBy by remember { mutableStateOf<OweType?>(null) }
 
     // State for error checking
     var nameError by remember { mutableStateOf(false) }
@@ -97,7 +100,10 @@ fun AddRecipientComposable(viewModel: AddRecipientScreenModel, navigator: Naviga
                     onValueChange = { name = it }
                 )
 
-                GenderSelectionChipGroup()
+                GenderSelectionChipGroup(
+                    isFillMaxWidth = true,
+                    onSelectionChanged = { gender = it }
+                )
 
                 // Note field
                 FloatingLabelEditText(
@@ -118,10 +124,12 @@ fun AddRecipientComposable(viewModel: AddRecipientScreenModel, navigator: Naviga
                     onValueChange = { name = it }
                 )
 
-                GenderSelectionChipGroup()
+                OweTypeChipGroup(isFillMaxWidth = true, onSelectionChanged = { owedBy = it })
 
                 // Submit button
-                Button(
+                MGButton(
+                    text = "Save Recipient",
+                    isFullWidth = true,
                     onClick = {
                         nameError = name.isEmpty()
                         contactError = contact.isEmpty()
@@ -129,13 +137,10 @@ fun AddRecipientComposable(viewModel: AddRecipientScreenModel, navigator: Naviga
                         if (!nameError && !contactError) {
                             // Perform the submit action, like saving recipient info
                             println("Recipient Added: $name, $contact, $email, $gender")
-                            viewModel.saveRecipient(name, contact, email, gender)
+                            viewModel.saveRecipient(name, contact, email, gender?.value ?: "")
                         }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Submit")
-                }
+                    }
+                )
             }
         }
     )

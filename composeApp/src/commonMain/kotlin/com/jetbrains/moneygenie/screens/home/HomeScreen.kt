@@ -32,14 +32,14 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.jetbrains.moneygenie.components.GradientIconButton
 import com.jetbrains.moneygenie.components.LottieView
 import com.jetbrains.moneygenie.components.MainAppBar
-import com.jetbrains.moneygenie.components.GradientIconButton
 import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.screens.addRecipients.AddRecipientScreen
 import com.jetbrains.moneygenie.screens.bottomSheets.HomeOptionsBS
-import com.jetbrains.moneygenie.theme.Color_N200
 import com.jetbrains.moneygenie.theme.MGTypography
+import com.jetbrains.moneygenie.theme.Natural300
 
 /**
  * Created by Kundan on 26/09/24
@@ -155,7 +155,7 @@ fun NoContentDashboard() {
             Text(
                 textAlign = TextAlign.Center,
                 text = "Click on + \n To add your first recipient",
-                color = Color_N200,
+                color = Natural300,
                 style = MGTypography().bodyRegularL
             )
         }

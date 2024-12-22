@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.jetbrains.moneygenie.theme.MGTypography
+import com.jetbrains.moneygenie.theme.Primary700
+import com.jetbrains.moneygenie.theme.White
 
 /**
  * Created by Kundan on 18/08/24
@@ -52,44 +54,41 @@ fun GradientIconButton(
 
 @Composable
 fun MGButton(
-    text: String,
-    type: MGButtonType,
     modifier: Modifier = Modifier,
     isFullWidth: Boolean = false,
+    text: String,
+    type: MGButtonType = MGButtonType.SOLID,
     onClick: () -> Unit
 ) {
-    if (isFullWidth) modifier.fillMaxWidth() else modifier.wrapContentWidth()
     Button(
         onClick = onClick,
         modifier = modifier
+            .then(if (isFullWidth) Modifier.fillMaxWidth() else Modifier.wrapContentWidth()) // Apply conditional modifier
             .height(50.dp), // Set height as per your design
         colors = when (type) {
             MGButtonType.SOLID -> ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF246432), // Solid button color (green)
-                contentColor = Color.White
+                containerColor = Primary700, // Solid button color (green)
+                contentColor = White
             )
 
             MGButtonType.OUTLINE -> ButtonDefaults.outlinedButtonColors(
-                contentColor = Color(0xFF246432) // Green color for text
+                contentColor = Primary700 // Green color for text
             )
 
             MGButtonType.TEXT -> ButtonDefaults.textButtonColors(
-                contentColor = Color(0xFF246432) // Green color for text
+                contentColor = Primary700 // Green color for text
             )
         },
         shape = CircleShape, // Rounded corners as per the design
         border = when (type) {
-            MGButtonType.OUTLINE -> BorderStroke(
-                1.dp,
-                Color(0xFF246432)
-            ) // 1-pixel border for outline button
+            MGButtonType.OUTLINE -> BorderStroke(1.dp, Primary700)
             else -> null
         },
         elevation = if (type == MGButtonType.SOLID) ButtonDefaults.buttonElevation(4.dp) else ButtonDefaults.buttonElevation(
             0.dp
         )
     ) {
-        Text(text = text, style = MGTypography().bodyBold)
+        Text(text = text, style = MGTypography().bodySemiBold)
     }
 }
 
