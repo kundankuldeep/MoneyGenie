@@ -27,6 +27,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jetbrains.moneygenie.components.FloatingLabelEditText
+import com.jetbrains.moneygenie.components.GenderSelectionChipGroup
 import com.jetbrains.moneygenie.components.MGButton
 import com.jetbrains.moneygenie.components.MGButtonType
 import com.jetbrains.moneygenie.components.VerticalSpace
@@ -61,16 +62,21 @@ class SignUpScreen : Screen {
         Scaffold(
             bottomBar = {
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 0.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    MGButton(text = "Get Started", type = MGButtonType.SOLID, onClick = {
-                        // save logged in to preferences
-                        coroutineScope.launch {
-                            PreferenceManager.savePreference(PreferenceKeys.IS_LOGGED_IN, true)
-                        }
-                        navigator.push(HomeScreen)
-                    })
+                    MGButton(
+                        isFullWidth = true,
+                        text = "Sign Up",
+                        type = MGButtonType.SOLID,
+                        onClick = {
+                            // save logged in to preferences
+                            coroutineScope.launch {
+                                PreferenceManager.savePreference(PreferenceKeys.IS_LOGGED_IN, true)
+                            }
+                            navigator.push(HomeScreen)
+                        })
                 }
             }
         ) {
@@ -80,6 +86,8 @@ class SignUpScreen : Screen {
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
+
+                    // Header content
                     Column(modifier = Modifier.padding(20.dp)) {
                         // logo icon
                         Image(
@@ -109,9 +117,12 @@ class SignUpScreen : Screen {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
+                            .padding(horizontal = 20.dp, vertical = 12.dp)
                             .verticalScroll(scrollState), // Enable vertical scrolling
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+
+                        val spaceBetween = 6
 
                         FloatingLabelEditText(
                             label = "Full name",
@@ -119,11 +130,15 @@ class SignUpScreen : Screen {
                             onValueChange = { textValue = it }
                         )
 
+                        VerticalSpace(spaceBetween)
+
                         FloatingLabelEditText(
                             label = "Email",
                             value = textValue,
                             onValueChange = { textValue = it }
                         )
+
+                        VerticalSpace(spaceBetween)
 
                         FloatingLabelEditText(
                             label = "Phone Number",
@@ -137,17 +152,29 @@ class SignUpScreen : Screen {
                             onValueChange = { textValue = it }
                         )
 
+                        VerticalSpace(spaceBetween)
+
+                        GenderSelectionChipGroup(isFillMaxWidth = true) {
+
+                        }
+
+                        VerticalSpace(spaceBetween)
+
                         FloatingLabelEditText(
                             label = "Passcode",
                             value = textValue,
                             onValueChange = { textValue = it }
                         )
 
+                        VerticalSpace(spaceBetween)
+
                         FloatingLabelEditText(
                             label = "Confirm Passcode",
                             value = textValue,
                             onValueChange = { textValue = it }
                         )
+
+                        VerticalSpace(spaceBetween)
                     }
                 }
             }
