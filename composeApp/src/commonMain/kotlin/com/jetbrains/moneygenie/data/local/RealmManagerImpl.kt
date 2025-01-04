@@ -18,7 +18,7 @@ class RealmManagerImpl : RealmManager {
 
     override fun init() {
         val config = RealmConfiguration.Builder(
-            schema = setOf(Recipient::class, Transaction::class) // Add your Realm objects here
+            schema = setOf(Recipient::class, Transaction::class)
         ).name("moneygenie.realm")
             .build()
         realm = Realm.open(config)
@@ -31,14 +31,11 @@ class RealmManagerImpl : RealmManager {
     }
 
     override fun <T : RealmObject> getObjectById(clazz: KClass<T>, id: String): T? {
-        val query: RealmQuery<T> = realm.query(clazz, "id = $0", id)
-        return query.first().find()
+        return realm.query(clazz, "id = $0", id).first().find()
     }
 
     override fun <T : RealmObject> getAllObjects(clazz: KClass<T>): List<T> {
-        val query: RealmQuery<T> = realm.query(clazz)
-        val results: RealmResults<T> = query.find()
-        return results.toList()
+        return realm.query(clazz).find().toList()
     }
 
     override fun <T : RealmObject> updateObject(obj: T, update: T.() -> Unit) {
@@ -49,10 +46,7 @@ class RealmManagerImpl : RealmManager {
 
     override fun <T : RealmObject> deleteObjectById(clazz: KClass<T>, id: String) {
         realm.writeBlocking {
-            val objToDelete: T? = query(clazz, "id = $0", id).first().find()
-            if (objToDelete != null) {
-                delete(objToDelete)
-            }
+            query(clazz, "id = $0", id).first().find()?.let { delete(it) }
         }
     }
 
@@ -66,5 +60,9 @@ class RealmManagerImpl : RealmManager {
         realm.writeBlocking {
             deleteAll()
         }
+    }
+
+    override fun <T : RealmObject> queryObjects(clazz: KClass<T>, query: String, vararg args: Any?): List<T> {
+        return realm.query(clazz, query, *args).find().toList()
     }
 }

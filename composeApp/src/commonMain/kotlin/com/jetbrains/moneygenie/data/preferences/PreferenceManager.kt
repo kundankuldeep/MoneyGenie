@@ -22,7 +22,7 @@ object PreferenceManager {
     }
 
     // Retrieve a preference
-    suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T): T {
+    suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T? = null): T? {
         return dataStore?.data?.map { preferences ->
             preferences[key] ?: defaultValue
         }?.first() ?: defaultValue

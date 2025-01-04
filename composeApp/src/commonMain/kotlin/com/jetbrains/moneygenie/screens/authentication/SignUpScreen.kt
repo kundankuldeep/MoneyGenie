@@ -10,34 +10,35 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.jetbrains.moneygenie.components.DropdownComposable
 import com.jetbrains.moneygenie.components.FloatingLabelEditText
 import com.jetbrains.moneygenie.components.GenderSelectionChipGroup
 import com.jetbrains.moneygenie.components.MGButton
 import com.jetbrains.moneygenie.components.MGButtonType
 import com.jetbrains.moneygenie.components.VerticalSpace
-import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
-import com.jetbrains.moneygenie.data.preferences.PreferenceManager
-import com.jetbrains.moneygenie.screens.home.HomeScreen
+import com.jetbrains.moneygenie.expects.DatePickerField
 import com.jetbrains.moneygenie.theme.MGTypography
 import com.jetbrains.moneygenie.theme.Natural500
 import com.jetbrains.moneygenie.theme.Primary700
-import kotlinx.coroutines.launch
 import moneygenie.composeapp.generated.resources.Res
 import moneygenie.composeapp.generated.resources.logo_green
 import org.jetbrains.compose.resources.painterResource
@@ -56,8 +57,6 @@ class SignUpScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel: SignUpScreenModel = getScreenModel()
         val scrollState = rememberScrollState() // Manages scroll position
-        var textValue by remember { mutableStateOf("") }
-        val coroutineScope = rememberCoroutineScope()
 
         Scaffold(
             bottomBar = {
@@ -68,14 +67,10 @@ class SignUpScreen : Screen {
                 ) {
                     MGButton(
                         isFullWidth = true,
-                        text = "Sign Up",
+                        text = "Create Account",
                         type = MGButtonType.SOLID,
                         onClick = {
-                            // save logged in to preferences
-                            coroutineScope.launch {
-                                PreferenceManager.savePreference(PreferenceKeys.IS_LOGGED_IN, true)
-                            }
-                            navigator.push(HomeScreen)
+                            viewModel.onSignUpClick(navigator)
                         })
                 }
             }
@@ -126,52 +121,87 @@ class SignUpScreen : Screen {
 
                         FloatingLabelEditText(
                             label = "Full name",
-                            value = textValue,
-                            onValueChange = { textValue = it }
+                            value = viewModel.fullName,
+                            onValueChange = { value -> viewModel.updateFullName(value) }
                         )
 
                         VerticalSpace(spaceBetween)
 
                         FloatingLabelEditText(
                             label = "Email",
-                            value = textValue,
-                            onValueChange = { textValue = it }
+                            value = viewModel.email,
+                            onValueChange = { value -> viewModel.updateEmail(value) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                         )
 
                         VerticalSpace(spaceBetween)
 
                         FloatingLabelEditText(
                             label = "Phone Number",
-                            value = textValue,
-                            onValueChange = { textValue = it }
+                            value = viewModel.phone,
+                            onValueChange = { value -> viewModel.updatePhone(value) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
                         )
 
-                        FloatingLabelEditText(
+                        DatePickerField(
                             label = "Date Of Birth",
-                            value = textValue,
-                            onValueChange = { textValue = it }
+                            value = viewModel.dob,
+                            onValueChange = { value -> viewModel.updateDob(value) }
                         )
 
                         VerticalSpace(spaceBetween)
 
-                        GenderSelectionChipGroup(isFillMaxWidth = true) {
-
+                        GenderSelectionChipGroup(isFillMaxWidth = true) { gender ->
+                            viewModel.updateGender(gender.value)
                         }
 
                         VerticalSpace(spaceBetween)
 
                         FloatingLabelEditText(
                             label = "Passcode",
-                            value = textValue,
-                            onValueChange = { textValue = it }
+                            value = viewModel.passcode,
+                            onValueChange = { value -> viewModel.updatePasscode(value) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                            isPasswordField = true
                         )
 
                         VerticalSpace(spaceBetween)
 
                         FloatingLabelEditText(
                             label = "Confirm Passcode",
-                            value = textValue,
-                            onValueChange = { textValue = it }
+                            value = viewModel.confirmPasscode,
+                            onValueChange = { value -> viewModel.updateConfirmPasscode(value) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+                            isPasswordField = true
+                        )
+                        VerticalSpace(spaceBetween)
+
+                        Text(
+                            "To help you recover your passcode, please answer the question below.",
+                            color = Natural500,
+                            style = MGTypography().bodyRegular
+                        )
+
+                        VerticalSpace(spaceBetween)
+
+                        DropdownComposable(
+                            options = viewModel.getQuestions(),
+                            selectedOption = viewModel.securityQuestion,
+                            onOptionSelected = { sq -> viewModel.securityQuestion = sq },
+                            label = "Select a question"
+                        )
+                        VerticalSpace(spaceBetween)
+
+                        FloatingLabelEditText(
+                            label = "Answer",
+                            value = viewModel.securityAnswer,
+                            onValueChange = { value -> viewModel.updateSecurityAnswer(value) },
+                        )
+                        VerticalSpace(spaceBetween)
+
+                        ClickableTermsAndPrivacy(
+                            onTermsClick = { /* Navigate to Terms of Service screen */ },
+                            onPrivacyClick = { /* Navigate to Privacy Policy screen */ }
                         )
 
                         VerticalSpace(spaceBetween)
@@ -180,4 +210,60 @@ class SignUpScreen : Screen {
             }
         }
     }
+}
+
+@Composable
+fun ClickableTermsAndPrivacy(
+    onTermsClick: () -> Unit,
+    onPrivacyClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val annotatedText = buildAnnotatedString {
+        append("By creating an account, you agree to our ")
+
+        // Terms of Service
+        pushStringAnnotation(tag = "TERMS", annotation = "terms")
+        withStyle(
+            style = SpanStyle(
+                color = Natural500,
+                fontWeight = FontWeight.SemiBold,
+                textDecoration = TextDecoration.Underline
+            )
+        ) {
+            append("Terms of Service")
+        }
+        pop()
+
+        append(" and ")
+
+        // Privacy Policy
+        pushStringAnnotation(tag = "PRIVACY", annotation = "privacy")
+        withStyle(
+            style = SpanStyle(
+                color = Natural500,
+                fontWeight = FontWeight.SemiBold,
+                textDecoration = TextDecoration.Underline
+            )
+        ) {
+            append("Privacy Policy")
+        }
+        pop()
+
+        append(".")
+    }
+
+    ClickableText(
+        text = annotatedText,
+        modifier = modifier,
+        style = MGTypography().bodyRegular.copy(color = Natural500),
+        onClick = { offset ->
+            annotatedText.getStringAnnotations(start = offset, end = offset)
+                .firstOrNull()?.let { annotation ->
+                    when (annotation.tag) {
+                        "TERMS" -> onTermsClick()
+                        "PRIVACY" -> onPrivacyClick()
+                    }
+                }
+        }
+    )
 }

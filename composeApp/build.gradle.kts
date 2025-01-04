@@ -71,6 +71,7 @@ kotlin {
             implementation(libs.compottie.dot)
             implementation(libs.compottie.network)
 
+            // Data Store Preferences
             api(libs.datastore.preferences)
             api(libs.datastore.core)
         }

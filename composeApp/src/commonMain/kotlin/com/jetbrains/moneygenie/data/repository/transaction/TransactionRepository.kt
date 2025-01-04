@@ -9,7 +9,12 @@ interface TransactionRepository {
     fun addTransaction(transaction: Transaction)
     fun getTransactionById(id: String): Transaction?
     fun getAllTransactions(): List<Transaction>
-    fun getTransactionsForRecipient(recipientId: String): List<Transaction>
+    fun getTransactionsForRecipient(recipientId: Long): List<Transaction>
     fun updateTransaction(transaction: Transaction, update: Transaction.() -> Unit)
-    fun deleteTransactionById(id: String)
+    fun deleteTransactionById(transaction: Transaction)
+    fun getAllLentAmount(): Double
+    fun getAllLentAmountFor(recipientId: Long): Double
+    fun getAllBorrowedAmount(): Double
+    fun getAllBorrowedAmountFor(recipientId: Long): Double
+    fun getLatestTransactionByRecipient(): List<Transaction>
 }

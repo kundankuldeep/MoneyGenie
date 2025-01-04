@@ -1,6 +1,7 @@
 package com.jetbrains.moneygenie.data.models
 
 import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.Index
 import io.realm.kotlin.types.annotations.PrimaryKey
 import kotlinx.datetime.Clock
 
@@ -11,10 +12,15 @@ import kotlinx.datetime.Clock
 class Transaction : RealmObject {
     @PrimaryKey
     var id: Long = Clock.System.now().toEpochMilliseconds()
-    var recipientId: String = ""
+
+    @Index
+    var recipientId: Long = 0L
     var amount: Double = 0.0
-    var type: Double = 0.0 // either you owe or they owe
+    var type: String? = null
     var note: String? = null
-    var date: Long = Clock.System.now().toEpochMilliseconds()
+
+    @Index
+    var createdDate: Long = Clock.System.now().toEpochMilliseconds()
+    var modifiedDate: Long = Clock.System.now().toEpochMilliseconds()
 }
 

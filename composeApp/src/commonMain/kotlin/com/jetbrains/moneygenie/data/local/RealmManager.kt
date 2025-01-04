@@ -15,4 +15,5 @@ interface RealmManager {
     fun <T : RealmObject> deleteObjectById(clazz: KClass<T>, id: String)
     fun closeRealm()
     fun clearDatabase()
+    fun <T : RealmObject> queryObjects(clazz: KClass<T>, query: String, vararg args: Any?): List<T>
 }

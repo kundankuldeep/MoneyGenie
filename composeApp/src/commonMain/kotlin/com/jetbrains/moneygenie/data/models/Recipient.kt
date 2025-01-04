@@ -14,7 +14,11 @@ class Recipient : RealmObject {
     var phone: String = "" // user input
     var email: String = "" // user input
     var gender: String = "" // user input
-    var note: String? = null // user input
+    var note: String? = null // user input,
     var createdDate: Long = Clock.System.now().toEpochMilliseconds()
     var updatedDate: Long = Clock.System.now().toEpochMilliseconds()
+
+    // Aggregated fields
+    var totalLent: Double = 0.0 // Total money lent to this recipient
+    var totalBorrowed: Double = 0.0 // Total money borrowed from this recipient
 }

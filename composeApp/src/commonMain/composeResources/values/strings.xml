@@ -14,6 +14,9 @@
     <string name="crawl_4_sub_title">Keep everyone updated without annoying notifications.</string>
 
     <string name="add_recipient_title">Add Recipient</string>
+    <string name="add_transaction_title">Add Transaction</string>
+    <string name="edit_transaction_title">Edit Transaction</string>
     <string name="add_recipient_sub_title">Add details for the recipient to track your transactions. You can also provide optional contact information.</string>
+    <string name="add_transaction_sub_title">Add or update transaction details to manage your finances effectively. You can include optional notes for better clarity.</string>
     <string name="add_outstanding_balance">Add an initial balance if there's an outstanding amount.</string>
 </resources>

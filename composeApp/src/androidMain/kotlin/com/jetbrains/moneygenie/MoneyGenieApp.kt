@@ -12,6 +12,7 @@ class MoneyGenieApp : Application() {
     override fun onCreate() {
         super.onCreate()
         initKoin()
+//        multiplatform.network.cmptoast.AppContext.apply { set(applicationContext) }
     }
 
     override fun onTerminate() {

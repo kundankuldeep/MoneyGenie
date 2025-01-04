@@ -7,10 +7,13 @@ import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepositoryImp
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepositoryImpl
 import com.jetbrains.moneygenie.screens.addRecipients.AddRecipientScreenModel
+import com.jetbrains.moneygenie.screens.authentication.LoginScreenModel
 import com.jetbrains.moneygenie.screens.authentication.SignUpScreenModel
 import com.jetbrains.moneygenie.screens.home.HomeScreenModel
 import com.jetbrains.moneygenie.screens.onboarding.OnBoardingScreenModel
+import com.jetbrains.moneygenie.screens.recipient.RecipientScreenModel
 import com.jetbrains.moneygenie.screens.settings.SettingsScreenModel
+import com.jetbrains.moneygenie.screens.transactions.AddTransactionScreenModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.ContentType
@@ -45,7 +48,7 @@ val dataModule = module {
 
     // Provide TransactionRepository
     single<TransactionRepository> {
-        TransactionRepositoryImpl(get()) // Inject RealmManager
+        TransactionRepositoryImpl(get(), get()) // Inject RealmManager
     }
 }
 
@@ -53,7 +56,10 @@ val screenModelsModule = module {
     factoryOf(::OnBoardingScreenModel)
     factoryOf(::HomeScreenModel)
     factoryOf(::AddRecipientScreenModel)
+    factoryOf(::AddTransactionScreenModel)
     factoryOf(::SignUpScreenModel)
+    factoryOf(::LoginScreenModel)
+    factoryOf(::RecipientScreenModel)
     factoryOf(::SettingsScreenModel)
 }
 

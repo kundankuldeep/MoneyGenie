@@ -77,38 +77,40 @@ fun GenderSelectionChipGroup(
     }
 }
 
-enum class OweType(val value: String) {
-    YouOwe("You Owe"),
-    TheyOwe("They Owe")
+enum class TransactionType(val value: String) {
+    Lent("Lent"),
+    Borrowed("Borrowed")
 }
 
 @Composable
 fun OweTypeChipGroup(
     isFillMaxWidth: Boolean = false,
-    onSelectionChanged: (OweType) -> Unit
+    onSelectionChanged: (TransactionType) -> Unit
 ) {
-    var oweType by remember { mutableStateOf<OweType?>(null) }
+    var transactionType by remember { mutableStateOf<TransactionType?>(null) }
 
     Row(
         modifier = Modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         SelectableChip(
-            text = OweType.YouOwe.value,
-            isSelected = oweType == OweType.YouOwe,
+            text = TransactionType.Lent.value,
+            isSelected = transactionType == TransactionType.Lent,
             onSelectionChanged = {
-                oweType = if (oweType == OweType.YouOwe) null else OweType.YouOwe
-                onSelectionChanged.invoke(OweType.YouOwe)
+                transactionType =
+                    if (transactionType == TransactionType.Lent) null else TransactionType.Lent
+                onSelectionChanged.invoke(TransactionType.Lent)
             },
             modifier = if (isFillMaxWidth) Modifier.weight(1f) else Modifier, // Equal width for each chip
         )
 
         SelectableChip(
-            text = OweType.TheyOwe.value,
-            isSelected = oweType == OweType.TheyOwe,
+            text = TransactionType.Borrowed.value,
+            isSelected = transactionType == TransactionType.Borrowed,
             onSelectionChanged = {
-                oweType = if (oweType == OweType.TheyOwe) null else OweType.TheyOwe
-                onSelectionChanged.invoke(OweType.TheyOwe)
+                transactionType =
+                    if (transactionType == TransactionType.Borrowed) null else TransactionType.Borrowed
+                onSelectionChanged.invoke(TransactionType.Borrowed)
             },
             modifier = if (isFillMaxWidth) Modifier.weight(1f) else Modifier, // Equal width for each chip
         )

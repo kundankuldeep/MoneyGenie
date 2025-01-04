@@ -22,18 +22,19 @@ import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
-import com.jetbrains.moneygenie.screens.home.HomeScreen
+import com.jetbrains.moneygenie.screens.authentication.LoginScreen
 import com.jetbrains.moneygenie.screens.onboarding.OnBoardingScreen
 
 @Composable
 fun App(prefs: DataStore<Preferences>) {
-    var isLoggedIn by remember { mutableStateOf(false) }
+    var isAccountCreated by remember { mutableStateOf(false) }
     var isPreferenceLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         PreferenceManager.dataStore = prefs
         // Fetch the preference in a coroutine
-        isLoggedIn = PreferenceManager.getPreference(PreferenceKeys.IS_LOGGED_IN, false)
+        isAccountCreated =
+            PreferenceManager.getPreference(PreferenceKeys.IS_ACCOUNT_CREATED, false) ?: false
         isPreferenceLoaded = true
     }
 
@@ -48,7 +49,7 @@ fun App(prefs: DataStore<Preferences>) {
                     bottomEnd = 0.dp
                 )
             ) {
-                val screen = if (isLoggedIn) HomeScreen else OnBoardingScreen()
+                val screen = if (isAccountCreated) LoginScreen() else OnBoardingScreen()
                 Navigator(screen) {
                     SlideTransition(it)
                 }
