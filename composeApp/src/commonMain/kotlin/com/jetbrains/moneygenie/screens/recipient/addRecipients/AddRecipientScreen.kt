@@ -132,7 +132,8 @@ class AddRecipientScreen(private val onBack: (shouldRefresh: Boolean) -> Unit) :
 
                     GenderSelectionChipGroup(
                         isFillMaxWidth = true,
-                        onSelectionChanged = { viewModel.updateGender(it.value) }
+                        selected = viewModel.recipientGender,
+                        onSelectionChanged = { viewModel.updateGender(it) }
                     )
 
                     // Note field
@@ -156,10 +157,13 @@ class AddRecipientScreen(private val onBack: (shouldRefresh: Boolean) -> Unit) :
                         onValueChange = { viewModel.updateOutstandingBalance(it) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
+                    VerticalSpace(12)
 
                     OweTypeChipGroup(
                         isFillMaxWidth = true,
                         onSelectionChanged = { viewModel.updateOutstandingBalanceOwedBy(it.value) })
+
+                    VerticalSpace(12)
 
                     // Outstanding balance field Note
                     FloatingLabelEditText(

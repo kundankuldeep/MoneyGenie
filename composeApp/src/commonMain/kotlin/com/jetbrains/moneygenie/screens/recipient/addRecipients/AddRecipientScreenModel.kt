@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
+import com.jetbrains.moneygenie.components.Genders
 import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
@@ -27,7 +28,7 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
     var recipientName by mutableStateOf("")
     var recipientNumber by mutableStateOf("")
     var recipientEmail by mutableStateOf("")
-    private var recipientGender by mutableStateOf("")
+    var recipientGender by mutableStateOf<Genders?>(null)
     var recipientNote by mutableStateOf("")
     var outstandingBalance by mutableStateOf("")
     private var outstandingBalanceOwedBy by mutableStateOf("")
@@ -45,7 +46,7 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
         recipientEmail = email
     }
 
-    fun updateGender(gender: String) {
+    fun updateGender(gender: Genders) {
         recipientGender = gender
     }
 
@@ -74,7 +75,7 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
             name = recipientName
             phone = recipientNumber
             email = recipientEmail
-            gender = recipientGender
+            gender = recipientGender?.value ?: Genders.MALE.value
             note = recipientNote
         }
         recipientRepository.addRecipient(newRecipient)
@@ -123,7 +124,7 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
                 false
             }
 
-            recipientGender.isBlank() -> {
+            recipientGender == null -> {
                 println("Please select recipient gender")
                 false
             }

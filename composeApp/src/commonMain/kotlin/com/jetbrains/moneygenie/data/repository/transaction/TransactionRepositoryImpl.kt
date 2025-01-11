@@ -18,7 +18,7 @@ class TransactionRepositoryImpl(
         updateRecipientAggregates(transaction.recipientId)
     }
 
-    override fun getTransactionById(id: String): Transaction? {
+    override fun getTransactionById(id: Long): Transaction? {
         return realmManager.getObjectById(Transaction::class, id)
     }
 
@@ -74,7 +74,7 @@ class TransactionRepositoryImpl(
     }
 
     private fun updateRecipientAggregates(recipientId: Long) {
-        val recipient = recipientRepository.getRecipientById(recipientId.toString())
+        val recipient = recipientRepository.getRecipientById(recipientId)
 
         if (recipient != null) {
             recipientRepository.updateRecipient(recipient) {

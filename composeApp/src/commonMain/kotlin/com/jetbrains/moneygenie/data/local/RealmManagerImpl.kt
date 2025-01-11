@@ -30,7 +30,7 @@ class RealmManagerImpl : RealmManager {
         }
     }
 
-    override fun <T : RealmObject> getObjectById(clazz: KClass<T>, id: String): T? {
+    override fun <T : RealmObject> getObjectById(clazz: KClass<T>, id: Long): T? {
         return realm.query(clazz, "id = $0", id).first().find()
     }
 

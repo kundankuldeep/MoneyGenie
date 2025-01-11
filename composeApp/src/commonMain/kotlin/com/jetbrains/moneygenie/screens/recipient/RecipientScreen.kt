@@ -70,7 +70,7 @@ class RecipientScreen(
             topBar = {
                 MainAppBar(
                     navigator,
-                    "${viewModel.recipient?.name}",
+                    viewModel.recipient?.name ?: "",
                     showNavigationIcon = true,
                     actions = {
                         IconButton(onClick = {

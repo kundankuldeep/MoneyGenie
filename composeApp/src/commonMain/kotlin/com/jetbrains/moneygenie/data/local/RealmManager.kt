@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 interface RealmManager {
     fun init()
     fun <T : RealmObject> addObject(obj: T)
-    fun <T : RealmObject> getObjectById(clazz: KClass<T>, id: String): T?
+    fun <T : RealmObject> getObjectById(clazz: KClass<T>, id: Long): T?
     fun <T : RealmObject> getAllObjects(clazz: KClass<T>): List<T>
     fun <T : RealmObject> updateObject(obj: T, update: T.() -> Unit)
     fun <T : RealmObject> deleteObjectById(clazz: KClass<T>, id: String)

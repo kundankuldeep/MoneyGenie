@@ -12,7 +12,7 @@ class RecipientRepositoryImpl(private val realmManager: RealmManager) : Recipien
         realmManager.addObject(recipient)
     }
 
-    override fun getRecipientById(id: String): Recipient? {
+    override fun getRecipientById(id: Long): Recipient? {
         return realmManager.getObjectById(Recipient::class, id)
     }
 

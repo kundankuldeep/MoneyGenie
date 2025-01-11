@@ -8,7 +8,7 @@ import com.jetbrains.moneygenie.data.models.Recipient
 
 interface RecipientRepository {
     fun addRecipient(recipient: Recipient)
-    fun getRecipientById(id: String): Recipient?
+    fun getRecipientById(id: Long): Recipient?
     fun getAllRecipients(): List<Recipient>
     fun updateRecipient(recipient: Recipient, update: Recipient.() -> Unit)
     fun deleteRecipientById(id: String)

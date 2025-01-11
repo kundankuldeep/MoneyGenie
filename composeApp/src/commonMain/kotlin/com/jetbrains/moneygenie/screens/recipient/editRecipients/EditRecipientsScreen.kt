@@ -36,7 +36,7 @@ import org.jetbrains.compose.resources.stringResource
  **/
 class EditRecipientsScreen(
     private val recipient: Recipient,
-    private val onBack: (shouldRefresh: Boolean) -> Unit
+    private val onBack: (updatedRecipient: Recipient?) -> Unit
 ) :
     Screen {
 
@@ -50,7 +50,7 @@ class EditRecipientsScreen(
     @Composable
     fun EditRecipientsScreenComposable(
         viewModel: EditRecipientsScreenModel,
-        onBack: (shouldRefresh: Boolean) -> Unit
+        onBack: (updatedRecipient: Recipient?) -> Unit
     ) {
         val navigator = LocalNavigator.currentOrThrow
         val scrollState = rememberScrollState() // Manages scroll position
@@ -116,10 +116,15 @@ class EditRecipientsScreen(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                     )
 
+                    VerticalSpace(12)
+
                     GenderSelectionChipGroup(
                         isFillMaxWidth = true,
-                        onSelectionChanged = { viewModel.updateGender(it.value) }
+                        selected = viewModel.recipientGender,
+                        onSelectionChanged = { viewModel.updateGender(it) }
                     )
+
+                    VerticalSpace(12)
 
                     // Note field
                     FloatingLabelEditText(
@@ -131,7 +136,6 @@ class EditRecipientsScreen(
                     VerticalSpace(24)
 
                 }
-
             }
         }
     }

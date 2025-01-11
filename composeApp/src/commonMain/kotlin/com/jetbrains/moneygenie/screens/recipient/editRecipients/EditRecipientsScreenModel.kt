@@ -6,10 +6,11 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
+import com.jetbrains.moneygenie.components.Genders
+import com.jetbrains.moneygenie.components.getGenderFromValue
 import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -24,8 +25,10 @@ class EditRecipientsScreenModel : ScreenModel, KoinComponent {
     var recipientName by mutableStateOf("")
     var recipientNumber by mutableStateOf("")
     var recipientEmail by mutableStateOf("")
-    private var recipientGender by mutableStateOf("")
+    var recipientGender by mutableStateOf<Genders?>(null)
     var recipientNote by mutableStateOf("")
+
+    private var currentRecipient: Recipient? = null
 
     fun updateName(name: String) {
         recipientName = name
@@ -39,7 +42,7 @@ class EditRecipientsScreenModel : ScreenModel, KoinComponent {
         recipientEmail = email
     }
 
-    fun updateGender(gender: String) {
+    fun updateGender(gender: Genders?) {
         recipientGender = gender
     }
 
@@ -48,35 +51,38 @@ class EditRecipientsScreenModel : ScreenModel, KoinComponent {
     }
 
     private fun updateCurrentRecipient() {
-        val userId = Clock.System.now().toEpochMilliseconds()
-
-        // Add a recipient
-        val newRecipient = Recipient().apply {
-            id = userId
-            name = recipientName
-            phone = recipientNumber
-            email = recipientEmail
-            gender = recipientGender
-            note = recipientNote
+        currentRecipient?.let { recipient ->
+            recipientRepository.updateRecipient(recipient) {
+                name = recipientName
+                phone = recipientNumber
+                email = recipientEmail
+                gender = recipientGender?.value ?: Genders.MALE.value
+                note = recipientNote
+            }
         }
-        recipientRepository.addRecipient(newRecipient)
     }
 
-    fun onUpdateClick(navigator: Navigator, onBack: (shouldRefresh: Boolean) -> Unit) {
+    fun onUpdateClick(navigator: Navigator, onBack: (updatedRecipient: Recipient?) -> Unit) {
         if (validateFields()) {
             screenModelScope.launch {
                 updateCurrentRecipient()
-                navigateToDashboard(navigator, onBack = onBack, true)
+                navigateToDashboard(navigator, onBack = onBack)
             }
         }
     }
 
     private fun navigateToDashboard(
         navigator: Navigator,
-        onBack: (shouldRefresh: Boolean) -> Unit,
-        shouldRefresh: Boolean = false
+        onBack: (updatedRecipient: Recipient?) -> Unit
     ) {
-        onBack.invoke(shouldRefresh)
+        onBack.invoke(Recipient().apply {
+            id = currentRecipient?.id ?: 0
+            name = recipientName
+            phone = recipientNumber
+            email = recipientEmail
+            gender = recipientGender?.value ?: Genders.MALE.value
+            note = recipientNote
+        })
         navigator.pop()
     }
 
@@ -92,7 +98,7 @@ class EditRecipientsScreenModel : ScreenModel, KoinComponent {
                 false
             }
 
-            recipientGender.isBlank() -> {
+            recipientGender == null -> {
                 println("Please select recipient gender")
                 false
             }
@@ -102,6 +108,11 @@ class EditRecipientsScreenModel : ScreenModel, KoinComponent {
     }
 
     fun initViews(recipient: Recipient) {
-
+        this.currentRecipient = recipient
+        updateName(recipient.name)
+        updateEmail(recipient.email)
+        updateNumber(recipient.phone)
+        updateGender(getGenderFromValue(recipient.gender))
+        updateNote(recipient.note ?: "")
     }
 }
