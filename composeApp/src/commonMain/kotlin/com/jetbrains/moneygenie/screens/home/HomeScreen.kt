@@ -21,9 +21,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,7 +42,9 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jetbrains.moneygenie.components.AccountStatusCard
 import com.jetbrains.moneygenie.components.GradientIconButton
 import com.jetbrains.moneygenie.components.LottieView
+import com.jetbrains.moneygenie.components.MGScaffold
 import com.jetbrains.moneygenie.components.MainAppBar
+import com.jetbrains.moneygenie.components.RoundedCornerSearchBar
 import com.jetbrains.moneygenie.components.VerticalSpace
 import com.jetbrains.moneygenie.theme.Error700
 import com.jetbrains.moneygenie.theme.MGTypography
@@ -50,7 +55,6 @@ import com.jetbrains.moneygenie.theme.Natural600
 import com.jetbrains.moneygenie.theme.Primary700
 import com.jetbrains.moneygenie.utils.DateTimeUtils
 import moneygenie.composeapp.generated.resources.Res
-import moneygenie.composeapp.generated.resources.ic_filter
 import moneygenie.composeapp.generated.resources.ic_search
 import org.jetbrains.compose.resources.painterResource
 
@@ -62,28 +66,29 @@ data object HomeScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
-        val screenModel: HomeScreenModel = getScreenModel()
-        screenModel.initViewModel()
-        HomeScreenComposable(screenModel, navigator, bottomSheetNavigator)
+        val viewModel: HomeScreenModel = getScreenModel()
+        HomeScreenComposable(viewModel, navigator, bottomSheetNavigator)
+        viewModel.initViewModel()
     }
 }
 
 @Composable
 fun HomeScreenComposable(
-    screenModel: HomeScreenModel,
+    viewModel: HomeScreenModel,
     navigator: Navigator,
     bottomSheetNavigator: BottomSheetNavigator
 ) {
 
-    Scaffold(
+    MGScaffold(
         topBar = {
             MainAppBar(
                 navigator,
-                "Hi ${screenModel.userName.value}!",
+                "Hi ${viewModel.userName.value}!",
                 showProfileIcon = true,
+                profileIconClicked = { viewModel.onProfileIconClicked(navigator) },
                 actions = {
                     IconButton(onClick = {
-                        screenModel.onMoreIconClick(bottomSheetNavigator, navigator)
+                        viewModel.onMoreIconClick(bottomSheetNavigator, navigator)
                     }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
@@ -96,7 +101,7 @@ fun HomeScreenComposable(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { screenModel.onAddRecipientClick(navigator) },
+                onClick = { viewModel.onAddRecipientClick(navigator) },
                 modifier = Modifier.padding(bottom = 30.dp),
                 shape = CircleShape
             ) {
@@ -108,7 +113,7 @@ fun HomeScreenComposable(
 
     ) {
         Box(Modifier.fillMaxSize().padding(it)) {
-            SetHomeScreen(screenModel, screenModel)
+            SetHomeScreen(viewModel, viewModel)
         }
     }
 }
@@ -124,9 +129,10 @@ fun SetHomeScreen(data: HomeScreenModel, screenModel: HomeScreenModel) {
 }
 
 @Composable
-fun MainContentDashboard(dataItem: ArrayList<RecipientViewItem>, screenModel: HomeScreenModel) {
+fun MainContentDashboard(dataItem: ArrayList<RecipientViewItem>, viewModel: HomeScreenModel) {
+    var isSearchEnable by remember { mutableStateOf(false) }
     Column(modifier = Modifier.padding(20.dp)) {
-        AccountStatusCard(screenModel.totalLent.value, screenModel.totalBorrowed.value)
+        AccountStatusCard(viewModel.totalLent.value, viewModel.totalBorrowed.value)
         VerticalSpace(24)
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -140,20 +146,28 @@ fun MainContentDashboard(dataItem: ArrayList<RecipientViewItem>, screenModel: Ho
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_search),
-                    contentDescription = "Edit Icon",
+                    contentDescription = "Search Icon",
                     tint = Primary700,
-                    modifier = Modifier.clickable { }
-                )
-                Icon(
-                    painter = painterResource(Res.drawable.ic_filter),
-                    contentDescription = "Edit Icon",
-                    tint = Primary700,
-                    modifier = Modifier.clickable { }
+                    modifier = Modifier.clickable {
+                        isSearchEnable = !isSearchEnable
+                        viewModel.updateSearchText("")
+                    }
                 )
             }
         }
+
+        // Search view for recipients
+        if (isSearchEnable) {
+            VerticalSpace(20)
+            RoundedCornerSearchBar(
+                query = viewModel.searchText.value,
+                onQueryChange = { value -> viewModel.updateSearchText(value) }
+            )
+            VerticalSpace(6)
+        }
+
         VerticalSpace(12)
-        RecipientListView(dataItem, screenModel)
+        RecipientListView(dataItem, viewModel)
     }
 }
 

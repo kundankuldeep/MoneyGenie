@@ -15,6 +15,7 @@ import com.jetbrains.moneygenie.components.CommonBottomSheet
 import com.jetbrains.moneygenie.components.TextWithIcon
 import com.jetbrains.moneygenie.components.VerticalSpace
 import com.jetbrains.moneygenie.screens.settings.SettingsScreen
+import com.jetbrains.moneygenie.theme.Primary500
 
 /**
  * Created by Kundan on 19/12/24
@@ -28,14 +29,15 @@ class HomeOptionsBS(private val navigator: Navigator) : Screen {
                 TextWithIcon(
                     text = "Settings",
                     icon = Icons.Rounded.Settings,
+                    iconTint = Primary500,
                     modifier = Modifier.clickable {
                         bottomSheetNavigator.hide()
                         navigator.push(SettingsScreen())
                     })
                 VerticalSpace(24)
-                TextWithIcon(text = "Share App", icon = Icons.Rounded.Share)
+                TextWithIcon(text = "Share App", icon = Icons.Rounded.Share, iconTint = Primary500)
                 VerticalSpace(24)
-                TextWithIcon(text = "Rate Us", icon = Icons.Rounded.ThumbUp)
+                TextWithIcon(text = "Rate Us", icon = Icons.Rounded.ThumbUp, iconTint = Primary500)
                 VerticalSpace(24)
             }
         }

@@ -6,11 +6,10 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
-import com.jetbrains.moneygenie.data.models.SelfData
+import com.jetbrains.moneygenie.components.Genders
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
 import com.jetbrains.moneygenie.screens.home.HomeScreen
-import com.jetbrains.moneygenie.utils.JsonParser
 import com.jetbrains.moneygenie.utils.ValidationUtils.isValidEmail
 import kotlinx.coroutines.launch
 
@@ -28,7 +27,7 @@ class SignUpScreenModel : ScreenModel {
 
     var dob by mutableStateOf("")
 
-    private var gender by mutableStateOf("")
+    var gender by mutableStateOf<Genders?>(null)
 
     var passcode by mutableStateOf("")
 
@@ -55,7 +54,7 @@ class SignUpScreenModel : ScreenModel {
         dob = value
     }
 
-    fun updateGender(value: String) {
+    fun updateGender(value: Genders) {
         gender = value
     }
 
@@ -94,7 +93,7 @@ class SignUpScreenModel : ScreenModel {
                 false
             }
 
-            gender.isBlank() -> {
+            gender == null -> {
                 println("Please select a gender")
                 false
             }
@@ -125,20 +124,19 @@ class SignUpScreenModel : ScreenModel {
 
     fun onSignUpClick(navigator: Navigator) {
         if (validateFields()) {
-            val selfData = SelfData(
-                name = fullName,
-                email = email,
-                phone = phone,
-                dob = dob,
-                gender = gender
-            )
-
-            val dataStr = JsonParser.toJson(selfData)
-
             // save logged in to preferences
             screenModelScope.launch {
                 PreferenceManager.savePreference(PreferenceKeys.IS_ACCOUNT_CREATED, true)
-                PreferenceManager.savePreference(PreferenceKeys.SELF_DATA, dataStr)
+
+                PreferenceManager.savePreference(PreferenceKeys.USERNAME, fullName)
+                PreferenceManager.savePreference(PreferenceKeys.EMAIL, email)
+                PreferenceManager.savePreference(PreferenceKeys.PHONE, phone)
+                PreferenceManager.savePreference(PreferenceKeys.DOB, dob)
+                PreferenceManager.savePreference(
+                    PreferenceKeys.GENDER,
+                    gender?.value ?: Genders.MALE.value
+                )
+
                 PreferenceManager.savePreference(PreferenceKeys.PASSCODE, passcode)
                 PreferenceManager.savePreference(
                     PreferenceKeys.SECURITY_QUESTION,

@@ -1,5 +1,6 @@
 package com.jetbrains.moneygenie.ui
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import com.jetbrains.moneygenie.theme.Natural500
 /**
  * Created by Kundan on 31/12/24
  **/
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun AndroidDatePickerField(
     label: String,
@@ -43,7 +45,7 @@ fun AndroidDatePickerField(
     var showDatePicker by remember { mutableStateOf(false) }
 
     // Manage TextField value state
-    var textFieldValue by remember { mutableStateOf(value) }
+    var textFieldValue by mutableStateOf(value)
 
     // Show the date picker dialog
     if (showDatePicker) {

@@ -151,8 +151,11 @@ class SignUpScreen : Screen {
 
                         VerticalSpace(spaceBetween)
 
-                        GenderSelectionChipGroup(isFillMaxWidth = true) { gender ->
-                            viewModel.updateGender(gender.value)
+                        GenderSelectionChipGroup(
+                            isFillMaxWidth = true,
+                            selected = viewModel.gender
+                        ) { gender ->
+                            viewModel.updateGender(gender)
                         }
 
                         VerticalSpace(spaceBetween)

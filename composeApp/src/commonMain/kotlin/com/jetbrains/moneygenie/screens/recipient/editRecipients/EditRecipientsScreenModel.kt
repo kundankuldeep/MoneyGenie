@@ -1,4 +1,4 @@
-package com.jetbrains.moneygenie.screens.addRecipients
+package com.jetbrains.moneygenie.screens.recipient.editRecipients
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,31 +7,25 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.jetbrains.moneygenie.data.models.Recipient
-import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
-import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * Created by Kundan on 06/10/24
+ * Created by Kundan on 10/01/25
  **/
-class AddRecipientScreenModel : ScreenModel, KoinComponent {
+class EditRecipientsScreenModel : ScreenModel, KoinComponent {
 
     // Inject repositories using Koin
     private val recipientRepository: RecipientRepository by inject()
-    private val transactionRepository: TransactionRepository by inject()
 
     var recipientName by mutableStateOf("")
     var recipientNumber by mutableStateOf("")
     var recipientEmail by mutableStateOf("")
-    var recipientGender by mutableStateOf("")
+    private var recipientGender by mutableStateOf("")
     var recipientNote by mutableStateOf("")
-    var outstandingBalance by mutableStateOf("")
-    var outstandingBalanceOwedBy by mutableStateOf("")
-    var outstandingBalanceNote by mutableStateOf("")
 
     fun updateName(name: String) {
         recipientName = name
@@ -53,19 +47,7 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
         recipientNote = note
     }
 
-    fun updateOutstandingBalance(balance: String) {
-        outstandingBalance = balance
-    }
-
-    fun updateOutstandingBalanceOwedBy(balanceOwedBy: String) {
-        outstandingBalanceOwedBy = balanceOwedBy
-    }
-
-    fun updateOutstandingBalanceNote(balanceNote: String) {
-        outstandingBalanceNote = balanceNote
-    }
-
-    private fun addCurrentRecipient() {
+    private fun updateCurrentRecipient() {
         val userId = Clock.System.now().toEpochMilliseconds()
 
         // Add a recipient
@@ -78,31 +60,18 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
             note = recipientNote
         }
         recipientRepository.addRecipient(newRecipient)
-
-        // if outstanding balance is there, add a transaction
-        if (outstandingBalance.isNotEmpty()) {
-            outstandingBalance.toDoubleOrNull()?.let { amt ->
-                val newTransaction = Transaction().apply {
-                    recipientId = userId
-                    amount = amt
-                    type = outstandingBalanceOwedBy
-                    note = outstandingBalanceNote
-                }
-                transactionRepository.addTransaction(newTransaction)
-            }
-        }
     }
 
-    fun onSaveClick(navigator: Navigator, onBack: (shouldRefresh: Boolean) -> Unit) {
+    fun onUpdateClick(navigator: Navigator, onBack: (shouldRefresh: Boolean) -> Unit) {
         if (validateFields()) {
             screenModelScope.launch {
-                addCurrentRecipient()
+                updateCurrentRecipient()
                 navigateToDashboard(navigator, onBack = onBack, true)
             }
         }
     }
 
-    fun navigateToDashboard(
+    private fun navigateToDashboard(
         navigator: Navigator,
         onBack: (shouldRefresh: Boolean) -> Unit,
         shouldRefresh: Boolean = false
@@ -128,17 +97,11 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
                 false
             }
 
-            outstandingBalance.isNotEmpty() && outstandingBalanceOwedBy.isEmpty() -> {
-                println("Outstanding Balance is there but, Owed By is not mentioned")
-                false
-            }
-
-            outstandingBalance.isEmpty() && outstandingBalanceOwedBy.isNotEmpty() -> {
-                println("Outstanding Balance is not there but, Owed By is mentioned")
-                false
-            }
-
             else -> true
         }
+    }
+
+    fun initViews(recipient: Recipient) {
+
     }
 }

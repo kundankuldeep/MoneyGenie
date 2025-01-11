@@ -1,6 +1,7 @@
 package com.jetbrains.moneygenie.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import com.jetbrains.moneygenie.theme.MGTypography
@@ -39,6 +41,7 @@ fun MainAppBar(
     title: String,
     showNavigationIcon: Boolean = false,
     showProfileIcon: Boolean = false,
+    profileIconClicked: () -> Unit = {},
     actions: (@Composable RowScope.() -> Unit)? = null,
 ) {
     TopAppBar(
@@ -51,7 +54,8 @@ fun MainAppBar(
                             .padding(end = 12.dp)
                             .size(36.dp)
                             .clip(CircleShape)
-                            .background(Color.White),
+                            .background(Color.White)
+                            .clickable { profileIconClicked.invoke() },
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -68,6 +72,8 @@ fun MainAppBar(
                     title,
                     color = Color.White,
                     style = MGTypography().headingBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.padding(start = 6.dp)
                 )
             }

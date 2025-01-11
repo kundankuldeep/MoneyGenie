@@ -6,12 +6,15 @@ import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepositoryImpl
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepositoryImpl
-import com.jetbrains.moneygenie.screens.addRecipients.AddRecipientScreenModel
 import com.jetbrains.moneygenie.screens.authentication.LoginScreenModel
 import com.jetbrains.moneygenie.screens.authentication.SignUpScreenModel
 import com.jetbrains.moneygenie.screens.home.HomeScreenModel
 import com.jetbrains.moneygenie.screens.onboarding.OnBoardingScreenModel
+import com.jetbrains.moneygenie.screens.profile.ProfileScreenModel
+import com.jetbrains.moneygenie.screens.profile.editProfile.EditProfileScreenModel
 import com.jetbrains.moneygenie.screens.recipient.RecipientScreenModel
+import com.jetbrains.moneygenie.screens.recipient.addRecipients.AddRecipientScreenModel
+import com.jetbrains.moneygenie.screens.recipient.editRecipients.EditRecipientsScreenModel
 import com.jetbrains.moneygenie.screens.settings.SettingsScreenModel
 import com.jetbrains.moneygenie.screens.transactions.AddTransactionScreenModel
 import io.ktor.client.HttpClient
@@ -61,6 +64,9 @@ val screenModelsModule = module {
     factoryOf(::LoginScreenModel)
     factoryOf(::RecipientScreenModel)
     factoryOf(::SettingsScreenModel)
+    factoryOf(::ProfileScreenModel)
+    factoryOf(::EditProfileScreenModel)
+    factoryOf(::EditRecipientsScreenModel)
 }
 
 fun initKoin() {

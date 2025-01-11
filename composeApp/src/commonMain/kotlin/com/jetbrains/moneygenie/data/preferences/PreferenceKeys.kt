@@ -8,11 +8,14 @@ import androidx.datastore.preferences.core.stringPreferencesKey
  **/
 object PreferenceKeys {
     val IS_ACCOUNT_CREATED = booleanPreferencesKey("is_account_created")
-    val SELF_DATA = stringPreferencesKey("self_data")
+    val USERNAME = stringPreferencesKey("username")
+    val EMAIL = stringPreferencesKey("email")
+    val PHONE = stringPreferencesKey("phone")
+    val DOB = stringPreferencesKey("dob")
+    val GENDER = stringPreferencesKey("gender")
     val PASSCODE = stringPreferencesKey("passcode")
     val SECURITY_QUESTION = stringPreferencesKey("securityQuestion")
     val SECURITY_ANSWER = stringPreferencesKey("securityAnswer")
-
 
     val APP_THEME = stringPreferencesKey("app_theme") // Light, Dark, System
     val LANGUAGE = stringPreferencesKey("language") // e.g., "en", "es"

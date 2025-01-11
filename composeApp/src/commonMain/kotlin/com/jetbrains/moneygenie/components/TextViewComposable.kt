@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -26,7 +27,7 @@ enum class IconPosition {
 @Composable
 fun TextWithIcon(
     text: String,
-    icon: ImageVector,
+    icon: Any,
     iconPosition: IconPosition = IconPosition.START,
     iconTint: Color = Color.Unspecified,
     textColor: Color = Color.Black,
@@ -35,6 +36,27 @@ fun TextWithIcon(
     spacing: Int = 8,
     modifier: Modifier = Modifier
 ) {
+
+    val iconContent: @Composable () -> Unit = {
+        when (icon) {
+            is ImageVector -> Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = iconTint,
+                modifier = Modifier.size(iconSize.dp)
+            )
+
+            is Painter -> Icon(
+                painter = icon,
+                contentDescription = null,
+                tint = iconTint,
+                modifier = Modifier.size(iconSize.dp)
+            )
+
+            else -> throw IllegalArgumentException("Unsupported icon type: ${icon::class}")
+        }
+    }
+
     when (iconPosition) {
         IconPosition.START -> {
             Row(
@@ -42,12 +64,7 @@ fun TextWithIcon(
                 horizontalArrangement = Arrangement.spacedBy(spacing.dp),
                 modifier = modifier
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = iconTint,
-                    modifier = Modifier.size(iconSize.dp)
-                )
+                iconContent()
                 Text(
                     text = text,
                     color = textColor,
@@ -67,12 +84,7 @@ fun TextWithIcon(
                     color = textColor,
                     style = textStyle
                 )
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = iconTint,
-                    modifier = Modifier.size(iconSize.dp)
-                )
+                iconContent()
             }
         }
 
@@ -82,12 +94,7 @@ fun TextWithIcon(
                 verticalArrangement = Arrangement.spacedBy(spacing.dp),
                 modifier = modifier
             ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = iconTint,
-                    modifier = Modifier.size(iconSize.dp)
-                )
+                iconContent()
                 Text(
                     text = text,
                     color = textColor,
@@ -107,12 +114,7 @@ fun TextWithIcon(
                     color = textColor,
                     style = textStyle
                 )
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = iconTint,
-                    modifier = Modifier.size(iconSize.dp)
-                )
+                iconContent()
             }
         }
     }

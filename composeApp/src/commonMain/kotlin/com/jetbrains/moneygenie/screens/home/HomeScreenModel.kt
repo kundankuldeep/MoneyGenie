@@ -6,17 +6,16 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import com.jetbrains.moneygenie.data.models.Recipient
-import com.jetbrains.moneygenie.data.models.SelfData
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
-import com.jetbrains.moneygenie.screens.addRecipients.AddRecipientScreen
 import com.jetbrains.moneygenie.screens.bottomSheets.HomeOptionsBS
+import com.jetbrains.moneygenie.screens.profile.ProfileScreen
 import com.jetbrains.moneygenie.screens.recipient.RecipientScreen
+import com.jetbrains.moneygenie.screens.recipient.addRecipients.AddRecipientScreen
 import com.jetbrains.moneygenie.screens.transactions.AddTransactionScreen
-import com.jetbrains.moneygenie.utils.JsonParser
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -34,7 +33,13 @@ class HomeScreenModel : ScreenModel, KoinComponent {
     val totalBorrowed = mutableStateOf(0.0)
     val dataList = mutableStateOf<ArrayList<RecipientViewItem>>(arrayListOf())
 
+    val searchText = mutableStateOf("")
+
     private var recipients: List<Recipient>? = null
+
+    fun updateSearchText(value: String) {
+        searchText.value = value
+    }
 
     fun initViewModel() {
         getDataForRecipients()
@@ -51,11 +56,8 @@ class HomeScreenModel : ScreenModel, KoinComponent {
 
     private fun getUserName() {
         screenModelScope.launch {
-            PreferenceManager.getPreference(PreferenceKeys.SELF_DATA)?.let {
-                // cast to SelfData
-                JsonParser.fromJson<SelfData>(it)?.let { data ->
-                    userName.value = data.name
-                }
+            PreferenceManager.getPreference(PreferenceKeys.USERNAME)?.let {
+                userName.value = it.split(" ").getOrNull(0) ?: ""
             }
         }
     }
@@ -139,6 +141,10 @@ class HomeScreenModel : ScreenModel, KoinComponent {
             getDataForRecipients()
             getAccountsOverallData()
         }
+    }
+
+    fun onProfileIconClicked(navigator: Navigator) {
+        navigator.push(ProfileScreen())
     }
 }
 

@@ -19,20 +19,34 @@ import com.jetbrains.moneygenie.theme.MGTypography
  * Created by Kundan on 20/12/24
  **/
 
-enum class Genders(val value: String) {
+enum class Genders(var value: String) {
     MALE("Male"),
     FEMALE("Female"),
     OTHER("Other")
+}
+
+fun getGenderFromValue(value: String?): Genders? {
+    if (value == "Male") {
+        return Genders.MALE
+    }
+    if (value == "Female") {
+        return Genders.FEMALE
+    }
+    if (value == "Other") {
+        return Genders.OTHER
+    }
+
+    return null
 }
 
 @Composable
 fun GenderSelectionChipGroup(
     isFillMaxWidth: Boolean = false,
     paddingValues: PaddingValues? = null,
+    selected: Genders? = null,
     onSelectionChanged: (Genders) -> Unit
 ) {
-    var selectedGender by remember { mutableStateOf<Genders?>(null) }
-
+    var selectedGender by mutableStateOf(selected)
     Column(modifier = Modifier.fillMaxWidth()) {
         Text("Select Gender", style = MGTypography().bodyRegularS)
         VerticalSpace(10)

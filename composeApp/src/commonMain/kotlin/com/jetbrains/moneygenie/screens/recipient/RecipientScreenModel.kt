@@ -8,7 +8,7 @@ import com.jetbrains.moneygenie.components.TransactionType
 import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
-import com.jetbrains.moneygenie.screens.addRecipients.AddRecipientScreen
+import com.jetbrains.moneygenie.screens.recipient.editRecipients.EditRecipientsScreen
 import com.jetbrains.moneygenie.screens.transactions.AddTransactionScreen
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -60,7 +60,7 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
 
     fun onEditRecipientClick(navigator: Navigator) {
         recipient?.let {
-            navigator.push(AddRecipientScreen({}))
+            navigator.push(EditRecipientsScreen(it, {}))
         }
     }
 
