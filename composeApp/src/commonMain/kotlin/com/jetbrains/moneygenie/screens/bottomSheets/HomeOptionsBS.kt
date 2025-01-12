@@ -1,7 +1,9 @@
 package com.jetbrains.moneygenie.screens.bottomSheets
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
@@ -27,12 +29,15 @@ class HomeOptionsBS(private val navigator: Navigator) : Screen {
     override fun Content() {
         val bottomSheetNavigator = LocalBottomSheetNavigator.current
         CommonBottomSheet {
-            Column {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 TextWithIcon(
                     text = "Settings",
                     icon = Icons.Rounded.Settings,
                     iconTint = Primary500,
-                    modifier = Modifier.clickable {
+                    modifier = Modifier.clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = null
+                    ) {
                         bottomSheetNavigator.hide()
                         navigator.push(SettingsScreen())
                     })
@@ -40,13 +45,27 @@ class HomeOptionsBS(private val navigator: Navigator) : Screen {
                 TextWithIcon(
                     text = "Share App",
                     icon = painterResource(resource = Res.drawable.ic_share_icon),
-                    iconTint = Primary500
+                    iconTint = Primary500,
+                    modifier = Modifier.clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = null
+                    ) {
+                        bottomSheetNavigator.hide()
+//                        navigator.push(SettingsScreen())
+                    }
                 )
                 VerticalSpace(24)
                 TextWithIcon(
                     text = "Rate Us",
                     icon = painterResource(resource = Res.drawable.ic_rate_us),
-                    iconTint = Primary500
+                    iconTint = Primary500,
+                    modifier = Modifier.clickable(
+                        interactionSource = MutableInteractionSource(),
+                        indication = null
+                    ) {
+                        bottomSheetNavigator.hide()
+//                        navigator.push(SettingsScreen())
+                    }
                 )
                 VerticalSpace(24)
             }

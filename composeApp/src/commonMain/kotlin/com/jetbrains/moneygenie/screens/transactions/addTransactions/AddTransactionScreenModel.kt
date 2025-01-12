@@ -1,4 +1,4 @@
-package com.jetbrains.moneygenie.screens.transactions
+package com.jetbrains.moneygenie.screens.transactions.addTransactions
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

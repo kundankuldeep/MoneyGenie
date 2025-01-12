@@ -2,6 +2,7 @@ package com.jetbrains.moneygenie.screens.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -144,15 +145,19 @@ fun MainContentDashboard(dataItem: ArrayList<RecipientViewItem>, viewModel: Home
                 color = Natural500
             )
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_search),
-                    contentDescription = "Search Icon",
-                    tint = Primary700,
-                    modifier = Modifier.clickable {
-                        isSearchEnable = !isSearchEnable
-                        viewModel.updateSearchText("")
-                    }
-                )
+                Box(modifier = Modifier.clickable(
+                    interactionSource = MutableInteractionSource(),
+                    indication = null
+                ) {
+                    isSearchEnable = !isSearchEnable
+                    viewModel.updateSearchText("")
+                }) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_search),
+                        contentDescription = "Search Icon",
+                        tint = Primary700
+                    )
+                }
             }
         }
 

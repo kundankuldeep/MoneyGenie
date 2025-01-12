@@ -10,7 +10,8 @@ import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
 import com.jetbrains.moneygenie.screens.recipient.editRecipients.EditRecipientsScreen
-import com.jetbrains.moneygenie.screens.transactions.AddTransactionScreen
+import com.jetbrains.moneygenie.screens.transactions.TransactionScreen
+import com.jetbrains.moneygenie.screens.transactions.addTransactions.AddTransactionScreen
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -24,16 +25,18 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
     private val transactionRepository: TransactionRepository by inject()
 
     var recipient by mutableStateOf<Recipient?>(null)
+    var navigator: Navigator? = null
 
     val totalLent = mutableStateOf(0.0)
     val totalBorrowed = mutableStateOf(0.0)
 
     var transactions = mutableStateOf(ArrayList<Transaction>())
 
-    fun initViews(recipient: Recipient) {
+    fun initViews(navigator: Navigator, recipient: Recipient) {
         if (!isInitialized) {
             // Initialize state only once
             this.recipient = recipient
+            this.navigator = navigator
             getTransactionsData()
             calculateAccountTotal()
             isInitialized = true
@@ -59,9 +62,9 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
         }
     }
 
-    fun onEditRecipientClick(navigator: Navigator) {
+    fun onEditRecipientClick() {
         recipient?.let {
-            navigator.push(EditRecipientsScreen(it) { updatedRecipient ->
+            navigator?.push(EditRecipientsScreen(it) { updatedRecipient ->
                 updatedRecipient?.let { data ->
                     recipient = data
                 }
@@ -69,14 +72,14 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
         }
     }
 
-    fun onAddTransactionClick(onBack: (shouldRefresh: Boolean) -> Unit, navigator: Navigator) {
+    fun onAddTransactionClick(onBack: (shouldRefresh: Boolean) -> Unit) {
         recipient?.id?.let {
-            navigator.push(AddTransactionScreen({ isRefresh ->
+            navigator?.push(AddTransactionScreen(it, null) { isRefresh ->
                 if (isRefresh) {
                     refreshRecipientScreen()
                     onBack.invoke(true)
                 }
-            }, it, null))
+            })
         }
     }
 
@@ -95,9 +98,27 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
 
     }
 
-    fun onDeleteRecipientClick(navigator: Navigator) {
+    fun onDeleteRecipientClick() {
         // show a confirmation bottom sheet, says will delete all transactions to that user
         // and will delete that user from DB, and this action can't be undo.
         // on confirmation archive that user in DB mark as inactive
+    }
+
+    fun onEditTransactionClick(transaction: Transaction) {
+        recipient?.id?.let { rId ->
+            navigator?.push(AddTransactionScreen(rId, transaction) {})
+        }
+
+    }
+
+    fun onDeleteTransactionClick(transaction: Transaction) {
+
+    }
+
+    fun onViewAllTransactionsClick() {
+        recipient?.id?.let { rId ->
+            navigator?.push(TransactionScreen(recipientId = rId))
+        }
+
     }
 }

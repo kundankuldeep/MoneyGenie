@@ -1,4 +1,4 @@
-package com.jetbrains.moneygenie.screens.transactions
+package com.jetbrains.moneygenie.screens.transactions.addTransactions
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +34,9 @@ import org.jetbrains.compose.resources.stringResource
  * Created by Kundan on 15/12/24
  **/
 class AddTransactionScreen(
-    private val onBack: (shouldRefresh: Boolean) -> Unit,
     private val recipientId: Long,
-    private val data: Transaction?
+    private val data: Transaction?,
+    private val onBack: (shouldRefresh: Boolean) -> Unit,
 ) :
     Screen {
     @Composable

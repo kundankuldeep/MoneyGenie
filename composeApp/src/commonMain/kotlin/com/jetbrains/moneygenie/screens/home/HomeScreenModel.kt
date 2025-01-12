@@ -15,7 +15,7 @@ import com.jetbrains.moneygenie.screens.bottomSheets.HomeOptionsBS
 import com.jetbrains.moneygenie.screens.profile.ProfileScreen
 import com.jetbrains.moneygenie.screens.recipient.RecipientScreen
 import com.jetbrains.moneygenie.screens.recipient.addRecipients.AddRecipientScreen
-import com.jetbrains.moneygenie.screens.transactions.AddTransactionScreen
+import com.jetbrains.moneygenie.screens.transactions.addTransactions.AddTransactionScreen
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -131,9 +131,9 @@ class HomeScreenModel : ScreenModel, KoinComponent {
 
     fun onAddTransactionClick(recipient: RecipientViewItem, navigator: Navigator) {
         println("onAddTransactionClick ${recipient.recipientName}")
-        navigator.push(AddTransactionScreen({
+        navigator.push(AddTransactionScreen(recipient.recipientId, null) {
             if (it) refreshDashboard()
-        }, recipient.recipientId, null))
+        })
     }
 
     private fun refreshDashboard() {

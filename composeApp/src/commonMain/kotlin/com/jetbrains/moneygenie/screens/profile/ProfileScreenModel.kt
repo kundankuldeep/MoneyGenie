@@ -8,6 +8,8 @@ import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
 import com.jetbrains.moneygenie.screens.profile.editProfile.EditProfileScreen
 import com.jetbrains.moneygenie.screens.settings.SettingsScreen
+import com.jetbrains.moneygenie.screens.settings.changePasscode.ChangePasscodeScreen
+import com.jetbrains.moneygenie.screens.settings.changeSecurityQuestion.ChangeSecurityQuestionScreen
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
@@ -57,16 +59,16 @@ class ProfileScreenModel : ScreenModel, KoinComponent {
     }
 
     fun onChangeSecurityQuestionClick(navigator: Navigator) {
-        println("onChangeSecurityQuestionClick")
+        navigator.push(ChangeSecurityQuestionScreen())
     }
 
     fun onChangePasswordClick(navigator: Navigator) {
-        println("onChangePasswordClick")
+        navigator.push(ChangePasscodeScreen())
     }
 
     fun onEditProfileClick(navigator: Navigator) {
         navigator.push(EditProfileScreen { isRefresh ->
-//            if (isRefresh) screenModelScope.launch { getAllProfileData() }
+            if (isRefresh) screenModelScope.launch { getAllProfileData() }
         })
     }
 }

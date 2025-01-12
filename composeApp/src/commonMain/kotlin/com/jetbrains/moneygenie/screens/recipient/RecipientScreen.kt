@@ -2,6 +2,7 @@ package com.jetbrains.moneygenie.screens.recipient
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.jetbrains.moneygenie.components.AccountStatusCard
 import com.jetbrains.moneygenie.components.MGButton
@@ -57,14 +59,15 @@ class RecipientScreen(
 ) : Screen {
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
         val viewModel: RecipientScreenModel = getScreenModel()
-        viewModel.initViews(recipient)
-        RecipientScreenComposable(viewModel)
+        viewModel.initViews(navigator, recipient)
+        RecipientScreenComposable(navigator, viewModel)
     }
 
     @Composable
-    fun RecipientScreenComposable(viewModel: RecipientScreenModel) {
-        val navigator = LocalNavigator.currentOrThrow
+    fun RecipientScreenComposable(navigator: Navigator, viewModel: RecipientScreenModel) {
+
 
         Scaffold(
             topBar = {
@@ -74,7 +77,7 @@ class RecipientScreen(
                     showNavigationIcon = true,
                     actions = {
                         IconButton(onClick = {
-                            viewModel.onEditRecipientClick(navigator)
+                            viewModel.onEditRecipientClick()
                         }) {
                             Icon(
                                 imageVector = Icons.Rounded.Edit,
@@ -83,7 +86,7 @@ class RecipientScreen(
                             )
                         }
                         IconButton(onClick = {
-                            viewModel.onDeleteRecipientClick(navigator)
+                            viewModel.onDeleteRecipientClick()
                         }) {
                             Icon(
                                 imageVector = Icons.Rounded.Delete,
@@ -108,7 +111,7 @@ class RecipientScreen(
                         text = "+ Add transaction",
                         type = MGButtonType.SOLID,
                         onClick = {
-                            viewModel.onAddTransactionClick(onBack, navigator)
+                            viewModel.onAddTransactionClick(onBack)
                         })
 
                     VerticalSpace(26)
@@ -144,7 +147,16 @@ class RecipientScreen(
                             style = MGTypography().bodyRegularL,
                             color = Natural500
                         )
-                        Text("View All", style = MGTypography().bodySemiBoldS, color = Primary700)
+                        Text(
+                            "View All",
+                            style = MGTypography().bodySemiBoldS,
+                            color = Primary700,
+                            modifier = Modifier.clickable(
+                                interactionSource = MutableInteractionSource(),
+                                indication = null
+                            ) {
+                                viewModel.onViewAllTransactionsClick()
+                            })
                     }
 
                     VerticalSpace(12)
@@ -172,14 +184,14 @@ class RecipientScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             items(viewModel.transactions.value.size) { index ->
-                TransactionItem(viewModel.transactions.value[index])
+                TransactionItem(viewModel, viewModel.transactions.value[index])
                 VerticalSpace(10)
             }
         }
     }
 
     @Composable
-    fun TransactionItem(transaction: Transaction) {
+    fun TransactionItem(viewModel: RecipientScreenModel, transaction: Transaction) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -212,14 +224,24 @@ class RecipientScreen(
                             painter = painterResource(Res.drawable.ic_edit),
                             contentDescription = "Edit Icon",
                             tint = Primary700,
-                            modifier = Modifier.clickable { }
+                            modifier = Modifier.clickable(
+                                interactionSource = MutableInteractionSource(),
+                                indication = null
+                            ) {
+                                viewModel.onEditTransactionClick(transaction)
+                            }
                         )
                         VerticalSpace(10)
                         Icon(
                             painter = painterResource(Res.drawable.ic_delete),
                             contentDescription = "Edit Icon",
                             tint = Error700,
-                            modifier = Modifier.clickable { }
+                            modifier = Modifier.clickable(
+                                interactionSource = MutableInteractionSource(),
+                                indication = null
+                            ) {
+                                viewModel.onDeleteTransactionClick(transaction)
+                            }
                         )
                     }
                 }
