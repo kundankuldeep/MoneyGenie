@@ -92,7 +92,9 @@ class ChangePasscodeScreen : Screen {
                     VerticalSpace(4)
                     Text(
                         text = viewModel.securityQuestion,
-                        style = MGTypography().bodyRegular
+                        textAlign = TextAlign.Start,
+                        style = MGTypography().bodyRegular,
+                        modifier = Modifier.fillMaxSize()
                     )
 
                     // Block for security Answer
@@ -106,7 +108,7 @@ class ChangePasscodeScreen : Screen {
                     // Block For new passcode
                     VerticalSpace(space)
                     FloatingLabelEditText(
-                        label = "Passcode",
+                        label = "New Passcode",
                         value = viewModel.passcode,
                         onValueChange = { value -> viewModel.updatePasscode(value) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
@@ -117,7 +119,7 @@ class ChangePasscodeScreen : Screen {
                     // Block For confirm new passcode
                     VerticalSpace(space)
                     FloatingLabelEditText(
-                        label = "Confirm Passcode",
+                        label = "Confirm New Passcode",
                         value = viewModel.confirmPasscode,
                         onValueChange = { value -> viewModel.updateConfirmPasscode(value) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),

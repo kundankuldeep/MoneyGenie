@@ -3,6 +3,7 @@ package com.jetbrains.moneygenie.ui
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -110,7 +111,10 @@ fun AndroidDatePickerField(
         Box(modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
-            .clickable {
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
                 showDatePicker = true
             }
         )

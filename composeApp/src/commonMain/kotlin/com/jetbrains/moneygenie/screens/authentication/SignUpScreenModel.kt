@@ -148,15 +148,4 @@ class SignUpScreenModel : ScreenModel {
             navigator.push(HomeScreen)
         }
     }
-
-    fun getQuestions(): List<String> {
-        return listOf(
-            "What are the last four digits of your Driving License?",
-            "What is the brand of your first Car?",
-            "What is the year of date of birth?",
-            "What are the last four digits of your PAN Card?",
-            "What are the last four digits of your Aadhaar Card?"
-        )
-    }
-
 }

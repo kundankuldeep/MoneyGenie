@@ -39,6 +39,7 @@ import com.jetbrains.moneygenie.expects.DatePickerField
 import com.jetbrains.moneygenie.theme.MGTypography
 import com.jetbrains.moneygenie.theme.Natural500
 import com.jetbrains.moneygenie.theme.Primary700
+import com.jetbrains.moneygenie.utils.MGConstants
 import moneygenie.composeapp.generated.resources.Res
 import moneygenie.composeapp.generated.resources.logo_green
 import org.jetbrains.compose.resources.painterResource
@@ -188,7 +189,7 @@ class SignUpScreen : Screen {
                         VerticalSpace(spaceBetween)
 
                         DropdownComposable(
-                            options = viewModel.getQuestions(),
+                            options = MGConstants.getQuestions(),
                             selectedOption = viewModel.securityQuestion,
                             onOptionSelected = { sq -> viewModel.securityQuestion = sq },
                             label = "Select a question"
