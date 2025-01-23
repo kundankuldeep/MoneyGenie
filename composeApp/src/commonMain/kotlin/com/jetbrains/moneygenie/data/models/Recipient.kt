@@ -7,6 +7,7 @@ import kotlinx.datetime.Clock
 /**
  * Created by Kundan on 23/10/24
  **/
+
 class Recipient : RealmObject {
     @PrimaryKey
     var id: Long = Clock.System.now().toEpochMilliseconds()

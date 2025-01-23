@@ -8,7 +8,9 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.data.models.Transaction
+import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
+import com.jetbrains.moneygenie.expects.openMessageApp
 import com.jetbrains.moneygenie.screens.recipient.editRecipients.EditRecipientsScreen
 import com.jetbrains.moneygenie.screens.transactions.TransactionScreen
 import com.jetbrains.moneygenie.screens.transactions.addTransactions.AddTransactionScreen
@@ -22,8 +24,16 @@ import org.koin.core.component.inject
 class RecipientScreenModel : ScreenModel, KoinComponent {
     private var isInitialized = false
 
+    var showSettleAccountDialog by mutableStateOf(false)
+    var showDeleteAccountDialog by mutableStateOf(false)
+    var showDeleteTransactionDialog by mutableStateOf(false)
+
+    var currentTransaction: Transaction? = null
+
+    private val recipientRepository: RecipientRepository by inject()
     private val transactionRepository: TransactionRepository by inject()
 
+    var recipientId: Long? = null
     var recipient by mutableStateOf<Recipient?>(null)
     var navigator: Navigator? = null
 
@@ -32,11 +42,12 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
 
     var transactions = mutableStateOf(ArrayList<Transaction>())
 
-    fun initViews(navigator: Navigator, recipient: Recipient) {
+    fun initViews(navigator: Navigator, recipient: Long) {
         if (!isInitialized) {
             // Initialize state only once
-            this.recipient = recipient
+            this.recipientId = recipient
             this.navigator = navigator
+            getRecipientData()
             getTransactionsData()
             calculateAccountTotal()
             isInitialized = true
@@ -44,10 +55,18 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
 
     }
 
+    private fun getRecipientData() {
+        screenModelScope.launch {
+            recipientId?.let {
+                recipient = recipientRepository.getRecipientById(it)
+            }
+        }
+    }
+
     private fun getTransactionsData() {
         transactions.value.clear()
         screenModelScope.launch {
-            recipient?.id?.let {
+            recipientId?.let {
                 transactions.value.addAll(transactionRepository.getTransactionsForRecipient(it))
             }
         }
@@ -55,7 +74,7 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
 
     private fun calculateAccountTotal() {
         screenModelScope.launch {
-            recipient?.id?.let {
+            recipientId?.let {
                 totalLent.value = transactionRepository.getAllLentAmountFor(it)
                 totalBorrowed.value = transactionRepository.getAllBorrowedAmountFor(it)
             }
@@ -72,12 +91,11 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
         }
     }
 
-    fun onAddTransactionClick(onBack: (shouldRefresh: Boolean) -> Unit) {
-        recipient?.id?.let {
+    fun onAddTransactionClick() {
+        recipientId?.let {
             navigator?.push(AddTransactionScreen(it, null) { isRefresh ->
                 if (isRefresh) {
                     refreshRecipientScreen()
-                    onBack.invoke(true)
                 }
             })
         }
@@ -91,11 +109,27 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
     }
 
     fun onSettleAccountClick() {
-
+        recipientId?.let { recipientId ->
+            screenModelScope.launch {
+                val balance = totalLent.value - totalBorrowed.value
+                if (balance != 0.0) {
+//                    transactionRepository.addTransaction(recipientId, balance)
+                    refreshRecipientScreen()
+                }
+            }
+        }
     }
 
     fun onRemindThemClick() {
-
+        recipient?.let {
+            val balance = totalLent.value - totalBorrowed.value
+            val message = if (balance > 0) {
+                "Hey ${it.name}, you owe me ₹$balance. Please settle the amount soon."
+            } else {
+                "Hey ${it.name}, I owe you ₹${-balance}. I will settle it soon."
+            }
+            openMessageApp(message)
+        }
     }
 
     fun onDeleteRecipientClick() {
@@ -105,20 +139,19 @@ class RecipientScreenModel : ScreenModel, KoinComponent {
     }
 
     fun onEditTransactionClick(transaction: Transaction) {
-        recipient?.id?.let { rId ->
+        recipientId?.let { rId ->
             navigator?.push(AddTransactionScreen(rId, transaction) {})
         }
 
     }
 
-    fun onDeleteTransactionClick(transaction: Transaction) {
-
+    fun onDeleteTransactionClick() {
+        // use current transaction here
     }
 
     fun onViewAllTransactionsClick() {
-        recipient?.id?.let { rId ->
+        recipientId?.let { rId ->
             navigator?.push(TransactionScreen(recipientId = rId))
         }
-
     }
 }

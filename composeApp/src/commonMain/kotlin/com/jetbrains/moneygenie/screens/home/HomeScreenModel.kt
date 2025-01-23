@@ -1,5 +1,6 @@
 package com.jetbrains.moneygenie.screens.home
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
@@ -31,7 +32,15 @@ class HomeScreenModel : ScreenModel, KoinComponent {
     val userName = mutableStateOf("Guest")
     val totalLent = mutableStateOf(0.0)
     val totalBorrowed = mutableStateOf(0.0)
-    val dataList = mutableStateOf<ArrayList<RecipientViewItem>>(arrayListOf())
+    private val allRecipients = mutableStateOf<List<RecipientViewItem>>(emptyList())
+    val dataList = derivedStateOf {
+        val query = searchText.value.lowercase().trim()
+        if (query.isEmpty()) allRecipients.value
+        else allRecipients.value.filter {
+            it.recipientName.lowercase().contains(query) || it.recipientNote.lowercase()
+                .contains(query)
+        }
+    }
 
     val searchText = mutableStateOf("")
 
@@ -63,13 +72,11 @@ class HomeScreenModel : ScreenModel, KoinComponent {
     }
 
     private fun getDataForRecipients() {
-        println("getDataForRecipients is called")
-        dataList.value.clear()
         screenModelScope.launch {
             recipients = recipientRepository.getAllRecipients()
             val latestTransactions = transactionRepository.getLatestTransactionByRecipient()
             recipients?.let {
-                dataList.value.addAll(getViewItemList(it, latestTransactions))
+                allRecipients.value = getViewItemList(it, latestTransactions)
             }
         }
     }
@@ -77,10 +84,8 @@ class HomeScreenModel : ScreenModel, KoinComponent {
     private fun getViewItemList(
         recipients: List<Recipient>,
         latestTransactions: List<Transaction>
-    ): ArrayList<RecipientViewItem> {
-        val list = arrayListOf<RecipientViewItem>()
-
-        recipients.forEach { recipient ->
+    ): List<RecipientViewItem> {
+        return recipients.map { recipient ->
             fun lastUpdatedDate(): Long {
                 val lastTransaction =
                     latestTransactions.firstOrNull { it.recipientId == recipient.id }
@@ -89,19 +94,15 @@ class HomeScreenModel : ScreenModel, KoinComponent {
 
             val amount = recipient.totalLent - recipient.totalBorrowed
 
-            list.add(
-                RecipientViewItem(
-                    recipientId = recipient.id,
-                    recipientName = recipient.name,
-                    recipientNote = recipient.note ?: "",
-                    amount = abs(amount),
-                    status = if (amount >= 0) OverAllStatus.YouOwe else OverAllStatus.TheyOwe,
-                    lastUpdatedDate = lastUpdatedDate(),
-                )
+            RecipientViewItem(
+                recipientId = recipient.id,
+                recipientName = recipient.name,
+                recipientNote = recipient.note ?: "",
+                amount = abs(amount),
+                status = if (amount >= 0) OverAllStatus.YouOwe else OverAllStatus.TheyOwe,
+                lastUpdatedDate = lastUpdatedDate(),
             )
         }
-
-        return list
     }
 
     fun onAddRecipientClick(navigator: Navigator) {
@@ -116,21 +117,17 @@ class HomeScreenModel : ScreenModel, KoinComponent {
         bottomSheetNavigator.show(HomeOptionsBS(navigator))
     }
 
-    private fun getRecipientBy(recipientIs: Long): Recipient? {
-        return recipients?.firstOrNull { it.id == recipientIs }
+    private fun getRecipientBy(recipientId: Long): Recipient? {
+        return recipients?.firstOrNull { it.id == recipientId }
     }
 
     fun onRecipientItemClick(recipient: RecipientViewItem, navigator: Navigator) {
-        println("onRecipientItemClick ${recipient.recipientName}")
         getRecipientBy(recipient.recipientId)?.let {
-            navigator.push(RecipientScreen({ isRefresh ->
-                if (isRefresh) refreshDashboard()
-            }, it))
+            navigator.push(RecipientScreen(it.id))
         }
     }
 
     fun onAddTransactionClick(recipient: RecipientViewItem, navigator: Navigator) {
-        println("onAddTransactionClick ${recipient.recipientName}")
         navigator.push(AddTransactionScreen(recipient.recipientId, null) {
             if (it) refreshDashboard()
         })
@@ -147,4 +144,3 @@ class HomeScreenModel : ScreenModel, KoinComponent {
         navigator.push(ProfileScreen())
     }
 }
-

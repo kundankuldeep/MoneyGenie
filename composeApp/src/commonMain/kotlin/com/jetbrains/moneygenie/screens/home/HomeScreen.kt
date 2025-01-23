@@ -130,7 +130,7 @@ fun SetHomeScreen(data: HomeScreenModel, screenModel: HomeScreenModel) {
 }
 
 @Composable
-fun MainContentDashboard(dataItem: ArrayList<RecipientViewItem>, viewModel: HomeScreenModel) {
+fun MainContentDashboard(dataItem: List<RecipientViewItem>, viewModel: HomeScreenModel) {
     var isSearchEnable by remember { mutableStateOf(false) }
     Column(modifier = Modifier.padding(20.dp)) {
         AccountStatusCard(viewModel.totalLent.value, viewModel.totalBorrowed.value)
@@ -177,7 +177,7 @@ fun MainContentDashboard(dataItem: ArrayList<RecipientViewItem>, viewModel: Home
 }
 
 @Composable
-fun RecipientListView(recipientList: ArrayList<RecipientViewItem>, screenModel: HomeScreenModel) {
+fun RecipientListView(recipientList: List<RecipientViewItem>, screenModel: HomeScreenModel) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {

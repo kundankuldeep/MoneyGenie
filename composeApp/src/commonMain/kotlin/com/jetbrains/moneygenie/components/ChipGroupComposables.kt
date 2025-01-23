@@ -130,3 +130,35 @@ fun OweTypeChipGroup(
         )
     }
 }
+
+enum class TransactionFilterType(val value: String) {
+    Older("Older"),
+    Lent("Lent"),
+    Borrowed("Borrowed")
+}
+
+@Composable
+fun TransactionFilters(
+    selectedFilter: TransactionFilterType?,
+    isFillMaxWidth: Boolean = false,
+    onSelectionChanged: (TransactionFilterType?) -> Unit
+) {
+    var currentFilter by remember { mutableStateOf(selectedFilter) }
+
+    Row(
+        modifier = Modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        TransactionFilterType.entries.forEach { filter ->
+            SelectableChip(
+                text = filter.value,
+                isSelected = currentFilter == filter,
+                onSelectionChanged = {
+                    currentFilter = if (currentFilter == filter) null else filter
+                    onSelectionChanged(currentFilter)
+                },
+                modifier = if (isFillMaxWidth) Modifier.weight(1f) else Modifier
+            )
+        }
+    }
+}
