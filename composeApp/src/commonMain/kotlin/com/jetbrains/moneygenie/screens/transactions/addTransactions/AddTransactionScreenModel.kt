@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
+import com.jetbrains.moneygenie.components.TransactionType
+import com.jetbrains.moneygenie.components.getTransactionFromValue
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
 import kotlinx.coroutines.launch
@@ -18,65 +20,77 @@ import org.koin.core.component.inject
 class AddTransactionScreenModel : ScreenModel, KoinComponent {
     private val transactionRepository: TransactionRepository by inject()
 
-    var transactionBalance by mutableStateOf("")
-    private var transactionBalanceOwedBy by mutableStateOf("")
-    var transactionBalanceNote by mutableStateOf("")
+    var transactionAmount by mutableStateOf("")
+    var transactionType by mutableStateOf<TransactionType?>(null)
+    var transactionNote by mutableStateOf("")
 
     private var recipientId: Long? = null
-    private var transactionData: Transaction? = null
+    private var existingTransaction: Transaction? = null
 
-    fun initialize(recipientId: Long, data: Transaction?) {
+    fun initialize(recipientId: Long, transaction: Transaction?) {
         this.recipientId = recipientId
-        this.transactionData = data
+        this.existingTransaction = transaction
+
+        // If editing an existing transaction, prefill fields
+        transaction?.let {
+            transactionAmount = it.amount.toString()
+            transactionType = getTransactionFromValue(it.type)
+            transactionNote = it.note.orEmpty()
+        }
     }
 
-    fun updateTransactionBalance(balance: String) {
-        transactionBalance = balance
+    fun updateTransactionAmount(amount: String) {
+        transactionAmount = amount
     }
 
-    fun updateTransactionBalanceOwedBy(balanceOwedBy: String) {
-        transactionBalanceOwedBy = balanceOwedBy
+    fun updateTransactionType(type: TransactionType) {
+        transactionType = type
     }
 
-    fun updateTransactionBalanceNote(balanceNote: String) {
-        transactionBalanceNote = balanceNote
+    fun updateTransactionNote(note: String) {
+        transactionNote = note
     }
-
 
     fun onSaveClick(navigator: Navigator, onBack: (shouldRefresh: Boolean) -> Unit) {
         if (validateFields()) {
             screenModelScope.launch {
-                saveCurrentTransaction()
+                saveTransaction()
                 onBack.invoke(true)
                 navigator.pop()
             }
         }
     }
 
-    private fun saveCurrentTransaction() {
+    private fun saveTransaction() {
         recipientId?.let { rId ->
-            transactionBalance.toDoubleOrNull()?.let { amt ->
-                transactionRepository.addTransaction(
-                    Transaction().apply {
+            transactionAmount.toDoubleOrNull()?.let { amt ->
+                if (existingTransaction == null) {
+                    transactionRepository.addTransaction(Transaction().apply {
                         recipientId = rId
                         amount = amt
-                        type = transactionBalanceOwedBy
-                        note = transactionBalanceNote
-                    }
-                )
+                        type = transactionType?.value
+                        note = transactionNote
+                    }) // Add new
+                } else {
+                    transactionRepository.updateTransaction(existingTransaction!!) {
+                        amount = amt
+                        type = transactionType?.value
+                        note = transactionNote
+                    } // Update existing
+                }
             }
         }
     }
 
     private fun validateFields(): Boolean {
         return when {
-            transactionBalance.isEmpty() -> {
-                println("Transaction balance is empty.")
+            transactionAmount.isEmpty() -> {
+                println("Transaction amount is empty.")
                 false
             }
 
-            transactionBalanceOwedBy.isEmpty() -> {
-                println("Please select transaction type")
+            transactionType == null -> {
+                println("Please select a transaction type.")
                 false
             }
 

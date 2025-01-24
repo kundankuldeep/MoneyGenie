@@ -195,7 +195,10 @@ fun RecipientItem(recipient: RecipientViewItem, screenModel: HomeScreenModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { screenModel.onRecipientItemClick(recipient, navigator) },
+            .clickable(
+                interactionSource = MutableInteractionSource(),
+                indication = null
+            ) { screenModel.onRecipientItemClick(recipient, navigator) },
         colors = CardDefaults.cardColors(containerColor = Color.White),
         border = BorderStroke(width = 1.dp, color = Natural100)
     ) {

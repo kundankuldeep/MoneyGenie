@@ -27,7 +27,7 @@ class LoginScreenModel : ScreenModel {
         screenModelScope.launch {
             val savedPasscode = PreferenceManager.getPreference(PreferenceKeys.PASSCODE, null)
             if (passcode == savedPasscode) {
-                navigator.push(HomeScreen)
+                navigator.replaceAll(HomeScreen)
             } else {
                 // Show error message
             }

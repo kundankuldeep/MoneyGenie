@@ -96,12 +96,24 @@ enum class TransactionType(val value: String) {
     Borrowed("Borrowed")
 }
 
+fun getTransactionFromValue(value: String?): TransactionType? {
+    if (value == "Lent") {
+        return TransactionType.Lent
+    }
+    if (value == "Borrowed") {
+        return TransactionType.Borrowed
+    }
+
+    return null
+}
+
 @Composable
 fun OweTypeChipGroup(
     isFillMaxWidth: Boolean = false,
+    selectedOption: TransactionType? = null, // Allow pre-selected option
     onSelectionChanged: (TransactionType) -> Unit
 ) {
-    var transactionType by remember { mutableStateOf<TransactionType?>(null) }
+    var transactionType = mutableStateOf(selectedOption)
 
     Row(
         modifier = Modifier,
@@ -109,24 +121,22 @@ fun OweTypeChipGroup(
     ) {
         SelectableChip(
             text = TransactionType.Lent.value,
-            isSelected = transactionType == TransactionType.Lent,
+            isSelected = transactionType.value == TransactionType.Lent,
             onSelectionChanged = {
-                transactionType =
-                    if (transactionType == TransactionType.Lent) null else TransactionType.Lent
-                onSelectionChanged.invoke(TransactionType.Lent)
+                transactionType.value = TransactionType.Lent
+                onSelectionChanged.invoke(transactionType.value!!)
             },
-            modifier = if (isFillMaxWidth) Modifier.weight(1f) else Modifier, // Equal width for each chip
+            modifier = if (isFillMaxWidth) Modifier.weight(1f) else Modifier
         )
 
         SelectableChip(
             text = TransactionType.Borrowed.value,
-            isSelected = transactionType == TransactionType.Borrowed,
+            isSelected = transactionType.value == TransactionType.Borrowed,
             onSelectionChanged = {
-                transactionType =
-                    if (transactionType == TransactionType.Borrowed) null else TransactionType.Borrowed
-                onSelectionChanged.invoke(TransactionType.Borrowed)
+                transactionType.value = TransactionType.Borrowed
+                onSelectionChanged.invoke(transactionType.value!!)
             },
-            modifier = if (isFillMaxWidth) Modifier.weight(1f) else Modifier, // Equal width for each chip
+            modifier = if (isFillMaxWidth) Modifier.weight(1f) else Modifier
         )
     }
 }
