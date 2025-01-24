@@ -8,6 +8,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
+import com.jetbrains.moneygenie.expects.showMessage
 import kotlinx.coroutines.launch
 
 /**
@@ -59,17 +60,17 @@ class ChangeSecurityQuestionScreenModel : ScreenModel {
     private fun validateFields(): Boolean {
         return when {
             passcode.isBlank() || passcode.length < 6 || passcode != yourPasscode -> {
-                println("Passcode is not valid")
+                showMessage("Passcode is not valid")
                 false
             }
 
             securityAnswer.isBlank() -> {
-                println("Security answer cannot be empty")
+                showMessage("Security answer cannot be empty")
                 false
             }
 
             securityAnswer.length < 4 -> {
-                println("Security answer cannot be less than 4 characters")
+                showMessage("Security answer cannot be less than 4 characters")
                 false
             }
 

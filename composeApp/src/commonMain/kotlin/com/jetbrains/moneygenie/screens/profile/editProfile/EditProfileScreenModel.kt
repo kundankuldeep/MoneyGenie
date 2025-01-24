@@ -10,6 +10,7 @@ import com.jetbrains.moneygenie.components.Genders
 import com.jetbrains.moneygenie.components.getGenderFromValue
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
+import com.jetbrains.moneygenie.expects.showMessage
 import com.jetbrains.moneygenie.utils.ValidationUtils
 import kotlinx.coroutines.launch
 
@@ -52,27 +53,27 @@ class EditProfileScreenModel : ScreenModel {
     private fun validateFields(): Boolean {
         return when {
             fullName.isBlank() -> {
-                println("Full Name cannot be empty")
+                showMessage("Full Name cannot be empty")
                 false
             }
 
             email.isBlank() || !ValidationUtils.isValidEmail(email) -> {
-                println("Enter a valid email address")
+                showMessage("Enter a valid email address")
                 false
             }
 
             phone.isBlank() || phone.length != 10 || !phone.all { it.isDigit() } -> {
-                println("Enter a valid 10-digit phone number")
+                showMessage("Enter a valid 10-digit phone number")
                 false
             }
 
             dob.isBlank() -> {
-                println("Date of Birth cannot be empty")
+                showMessage("Date of Birth cannot be empty")
                 false
             }
 
             gender == null -> {
-                println("Please select a gender")
+                showMessage("Please select a gender")
                 false
             }
 

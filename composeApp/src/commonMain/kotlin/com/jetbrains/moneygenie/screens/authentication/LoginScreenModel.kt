@@ -8,6 +8,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
+import com.jetbrains.moneygenie.expects.showMessage
 import com.jetbrains.moneygenie.screens.home.HomeScreen
 import kotlinx.coroutines.launch
 
@@ -30,6 +31,7 @@ class LoginScreenModel : ScreenModel {
                 navigator.replaceAll(HomeScreen)
             } else {
                 // Show error message
+                showMessage("Invalid passcode")
             }
         }
     }

@@ -11,6 +11,7 @@ import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
+import com.jetbrains.moneygenie.expects.showMessage
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import org.koin.core.component.KoinComponent
@@ -115,27 +116,27 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
     private fun validateFields(): Boolean {
         return when {
             recipientName.isBlank() -> {
-                println("Recipient Name cannot be empty")
+                showMessage("Recipient Name cannot be empty")
                 false
             }
 
             recipientNumber.isBlank() || recipientNumber.length != 10 || !recipientNumber.all { it.isDigit() } -> {
-                println("Enter a valid 10-digit phone number")
+                showMessage("Enter a valid 10-digit phone number")
                 false
             }
 
             recipientGender == null -> {
-                println("Please select recipient gender")
+                showMessage("Please select recipient gender")
                 false
             }
 
             outstandingBalance.isNotEmpty() && outstandingBalanceOwedBy.isEmpty() -> {
-                println("Outstanding Balance is there but, Owed By is not mentioned")
+                showMessage("Outstanding Balance is there but, Owed By is not mentioned")
                 false
             }
 
             outstandingBalance.isEmpty() && outstandingBalanceOwedBy.isNotEmpty() -> {
-                println("Outstanding Balance is not there but, Owed By is mentioned")
+                showMessage("Outstanding Balance is not there but, Owed By is mentioned")
                 false
             }
 

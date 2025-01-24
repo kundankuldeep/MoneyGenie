@@ -9,6 +9,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.jetbrains.moneygenie.components.Genders
 import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
+import com.jetbrains.moneygenie.expects.showMessage
 import com.jetbrains.moneygenie.screens.home.HomeScreen
 import com.jetbrains.moneygenie.utils.ValidationUtils.isValidEmail
 import kotlinx.coroutines.launch
@@ -74,47 +75,47 @@ class SignUpScreenModel : ScreenModel {
     private fun validateFields(): Boolean {
         return when {
             fullName.isBlank() -> {
-                println("Full Name cannot be empty")
+                showMessage("Full Name cannot be empty")
                 false
             }
 
             email.isBlank() || !isValidEmail(email) -> {
-                println("Enter a valid email address")
+                showMessage("Enter a valid email address")
                 false
             }
 
             phone.isBlank() || phone.length != 10 || !phone.all { it.isDigit() } -> {
-                println("Enter a valid 10-digit phone number")
+                showMessage("Enter a valid 10-digit phone number")
                 false
             }
 
             dob.isBlank() -> {
-                println("Date of Birth cannot be empty")
+                showMessage("Date of Birth cannot be empty")
                 false
             }
 
             gender == null -> {
-                println("Please select a gender")
+                showMessage("Please select a gender")
                 false
             }
 
             passcode.isBlank() || passcode.length < 6 -> {
-                println("Passcode must be at least 6 characters")
+                showMessage("Passcode must be at least 6 characters")
                 false
             }
 
             confirmPasscode.isBlank() || confirmPasscode != passcode -> {
-                println("Passcodes do not match")
+                showMessage("Passcodes do not match")
                 false
             }
 
             securityQuestion.isBlank() -> {
-                println("Please select a security question.")
+                showMessage("Please select a security question.")
                 false
             }
 
             securityAnswer.isBlank() -> {
-                println("Please enter the answer to the selected security question.")
+                showMessage("Please enter the answer to the selected security question.")
                 false
             }
 

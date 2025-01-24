@@ -10,6 +10,7 @@ import com.jetbrains.moneygenie.components.TransactionType
 import com.jetbrains.moneygenie.components.getTransactionFromValue
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.transaction.TransactionRepository
+import com.jetbrains.moneygenie.expects.showMessage
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -85,12 +86,12 @@ class AddTransactionScreenModel : ScreenModel, KoinComponent {
     private fun validateFields(): Boolean {
         return when {
             transactionAmount.isEmpty() -> {
-                println("Transaction amount is empty.")
+                showMessage("Transaction amount is empty.")
                 false
             }
 
             transactionType == null -> {
-                println("Please select a transaction type.")
+                showMessage("Please select a transaction type.")
                 false
             }
 
