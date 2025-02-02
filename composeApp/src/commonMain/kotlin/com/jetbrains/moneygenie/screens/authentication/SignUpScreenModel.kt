@@ -146,7 +146,7 @@ class SignUpScreenModel : ScreenModel {
                 PreferenceManager.savePreference(PreferenceKeys.SECURITY_ANSWER, securityAnswer)
             }
 
-            navigator.replaceAll(HomeScreen)
+            navigator.push(HomeScreen)
         }
     }
 }

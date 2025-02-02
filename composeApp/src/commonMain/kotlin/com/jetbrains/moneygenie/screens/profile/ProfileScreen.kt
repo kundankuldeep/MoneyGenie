@@ -22,9 +22,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -38,9 +41,13 @@ import com.jetbrains.moneygenie.components.TextWithIcon
 import com.jetbrains.moneygenie.components.VerticalSpace
 import com.jetbrains.moneygenie.theme.Error700
 import com.jetbrains.moneygenie.theme.MGTypography
-import com.jetbrains.moneygenie.theme.Natural200
+import com.jetbrains.moneygenie.theme.Natural100
+import com.jetbrains.moneygenie.theme.Primary100
+import com.jetbrains.moneygenie.theme.Primary300
 import com.jetbrains.moneygenie.theme.Primary400
 import com.jetbrains.moneygenie.theme.Primary500
+import com.jetbrains.moneygenie.theme.Primary600
+import com.jetbrains.moneygenie.theme.White
 import moneygenie.composeapp.generated.resources.Res
 import moneygenie.composeapp.generated.resources.ic_cloud_download
 import moneygenie.composeapp.generated.resources.ic_cloud_upload
@@ -148,7 +155,7 @@ class ProfileScreen : Screen {
                                     viewModel.onChangePasswordClick(navigator)
                                 }
                                 VerticalSpace(10)
-                                HorizontalDivider(thickness = 1.dp, color = Natural200)
+                                HorizontalDivider(thickness = 1.dp, color = Natural100)
                                 VerticalSpace(10)
                                 ProfileScreenItem("Change Security question", Icons.Rounded.Info) {
                                     viewModel.onChangeSecurityQuestionClick(navigator)
@@ -185,17 +192,41 @@ class ProfileScreen : Screen {
                         Box(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
                             Column {
                                 ProfileScreenItem(
-                                    "Import Data",
+                                    "Import Data From File",
                                     painterResource(resource = Res.drawable.ic_cloud_download)
                                 ) {
                                     viewModel.onImportClick(navigator)
                                 }
+
                                 VerticalSpace(10)
-                                HorizontalDivider(thickness = 1.dp, color = Natural200)
+                                HorizontalDivider(thickness = 1.dp, color = Natural100)
                                 VerticalSpace(10)
 
                                 ProfileScreenItem(
-                                    "Export Data",
+                                    "Export Data To File",
+                                    painterResource(resource = Res.drawable.ic_cloud_upload)
+                                ) {
+                                    viewModel.onExportClick(navigator)
+                                }
+
+                                VerticalSpace(10)
+                                HorizontalDivider(thickness = 1.dp, color = Natural100)
+                                VerticalSpace(10)
+
+                                ProfileScreenItemWithSwitch(
+                                    "Sync to Google Drive",
+                                    isChecked = false,
+                                    icon = painterResource(resource = Res.drawable.ic_cloud_upload)
+                                ) {
+                                    viewModel.onExportClick(navigator)
+                                }
+
+                                VerticalSpace(10)
+                                HorizontalDivider(thickness = 1.dp, color = Natural100)
+                                VerticalSpace(10)
+
+                                ProfileScreenItem(
+                                    "Sync from Google Drive",
                                     painterResource(resource = Res.drawable.ic_cloud_upload)
                                 ) {
                                     viewModel.onExportClick(navigator)
@@ -222,7 +253,7 @@ class ProfileScreen : Screen {
                                 }
 
                                 VerticalSpace(10)
-                                HorizontalDivider(thickness = 1.dp, color = Natural200)
+                                HorizontalDivider(thickness = 1.dp, color = Natural100)
                                 VerticalSpace(10)
 
                                 ProfileScreenItem(
@@ -267,6 +298,40 @@ fun ProfileScreenItem(
             imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
             contentDescription = "Arrow Icon",
             tint = Primary400
+        )
+    }
+}
+
+@Composable
+fun ProfileScreenItemWithSwitch(
+    title: String,
+    icon: Any,
+    isChecked: Boolean,
+    iconColor: Color = Primary500,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextWithIcon(
+            text = title,
+            icon = icon,
+            iconTint = iconColor
+        )
+
+        Switch(
+            checked = isChecked,
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Primary600,
+                checkedTrackColor = Primary100,
+                checkedBorderColor = Primary100,
+                uncheckedBorderColor = Primary300,
+                uncheckedTrackColor = White,
+                uncheckedThumbColor = Primary400
+            )
         )
     }
 }

@@ -1,6 +1,7 @@
 package com.jetbrains.moneygenie.screens.authentication
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -104,6 +105,17 @@ class LoginScreen : Screen {
 
                         VerticalSpace(spaceBetween)
 
+                        Text(
+                            "Forgot Passcode?",
+                            color = Primary700,
+                            style = MGTypography().bodyRegular,
+                            modifier = Modifier.clickable {
+                                viewModel.onForgotPasscodeClick(navigator)
+                            }
+                        )
+
+                        VerticalSpace(30)
+
                         MGButton(
                             isFullWidth = true,
                             text = "Continue",
@@ -111,8 +123,6 @@ class LoginScreen : Screen {
                             onClick = {
                                 viewModel.onLoginClick(navigator)
                             })
-
-                        VerticalSpace(spaceBetween)
                     }
                 }
             }

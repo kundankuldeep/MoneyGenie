@@ -7,6 +7,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.navigator.Navigator
 import com.jetbrains.moneygenie.components.Genders
+import com.jetbrains.moneygenie.components.TransactionType
 import com.jetbrains.moneygenie.data.models.Recipient
 import com.jetbrains.moneygenie.data.models.Transaction
 import com.jetbrains.moneygenie.data.repository.recipient.RecipientRepository
@@ -32,7 +33,7 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
     var recipientGender by mutableStateOf<Genders?>(null)
     var recipientNote by mutableStateOf("")
     var outstandingBalance by mutableStateOf("")
-    private var outstandingBalanceOwedBy by mutableStateOf("")
+    var transactionType by mutableStateOf<TransactionType?>(null)
     var outstandingBalanceNote by mutableStateOf("")
 
     fun updateName(name: String) {
@@ -59,8 +60,8 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
         outstandingBalance = balance
     }
 
-    fun updateOutstandingBalanceOwedBy(balanceOwedBy: String) {
-        outstandingBalanceOwedBy = balanceOwedBy
+    fun updateOutstandingBalanceOwedBy(type: TransactionType) {
+        transactionType = type
     }
 
     fun updateOutstandingBalanceNote(balanceNote: String) {
@@ -87,7 +88,7 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
                 val newTransaction = Transaction().apply {
                     recipientId = userId
                     amount = amt
-                    type = outstandingBalanceOwedBy
+                    type = transactionType?.value
                     note = outstandingBalanceNote
                 }
                 transactionRepository.addTransaction(newTransaction)
@@ -130,12 +131,12 @@ class AddRecipientScreenModel : ScreenModel, KoinComponent {
                 false
             }
 
-            outstandingBalance.isNotEmpty() && outstandingBalanceOwedBy.isEmpty() -> {
+            outstandingBalance.isNotEmpty() && transactionType == null -> {
                 showMessage("Outstanding Balance is there but, Owed By is not mentioned")
                 false
             }
 
-            outstandingBalance.isEmpty() && outstandingBalanceOwedBy.isNotEmpty() -> {
+            outstandingBalance.isEmpty() && transactionType != null -> {
                 showMessage("Outstanding Balance is not there but, Owed By is mentioned")
                 false
             }

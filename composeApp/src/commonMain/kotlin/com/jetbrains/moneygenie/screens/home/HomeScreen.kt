@@ -120,9 +120,10 @@ fun HomeScreenComposable(
 }
 
 @Composable
-fun SetHomeScreen(data: HomeScreenModel, screenModel: HomeScreenModel) {
-    val dataItem = data.dataList.value
-    if (dataItem.isNotEmpty()) {
+fun SetHomeScreen(viewModel: HomeScreenModel, screenModel: HomeScreenModel) {
+    val allData = viewModel.allRecipients.value
+    val dataItem = viewModel.dataList.value
+    if (allData.isNotEmpty()) {
         MainContentDashboard(dataItem, screenModel)
     } else {
         NoContentDashboard()
@@ -133,7 +134,11 @@ fun SetHomeScreen(data: HomeScreenModel, screenModel: HomeScreenModel) {
 fun MainContentDashboard(dataItem: List<RecipientViewItem>, viewModel: HomeScreenModel) {
     var isSearchEnable by remember { mutableStateOf(false) }
     Column(modifier = Modifier.padding(20.dp)) {
-        AccountStatusCard(viewModel.totalLent.value, viewModel.totalBorrowed.value)
+        AccountStatusCard(
+            viewModel.totalLent.value,
+            viewModel.totalBorrowed.value,
+            settledAccountText = "OverAll Account is balanced"
+        )
         VerticalSpace(24)
         Row(
             modifier = Modifier.fillMaxWidth(),

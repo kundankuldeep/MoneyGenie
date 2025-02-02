@@ -136,6 +136,7 @@ class TransactionScreen(private val recipientId: Long) : Screen {
                         }
                     }
                 }, transaction)
+                VerticalSpace(8)
             }
         }
     }

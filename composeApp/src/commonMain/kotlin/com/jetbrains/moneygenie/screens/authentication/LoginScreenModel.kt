@@ -10,6 +10,7 @@ import com.jetbrains.moneygenie.data.preferences.PreferenceKeys
 import com.jetbrains.moneygenie.data.preferences.PreferenceManager
 import com.jetbrains.moneygenie.expects.showMessage
 import com.jetbrains.moneygenie.screens.home.HomeScreen
+import com.jetbrains.moneygenie.screens.settings.changePasscode.ChangePasscodeScreen
 import kotlinx.coroutines.launch
 
 /**
@@ -34,5 +35,9 @@ class LoginScreenModel : ScreenModel {
                 showMessage("Invalid passcode")
             }
         }
+    }
+
+    fun onForgotPasscodeClick(navigator: Navigator) {
+        navigator.push(ChangePasscodeScreen())
     }
 }

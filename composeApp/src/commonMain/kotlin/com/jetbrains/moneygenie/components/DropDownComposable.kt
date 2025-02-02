@@ -2,6 +2,7 @@ package com.jetbrains.moneygenie.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -77,7 +78,10 @@ fun DropdownComposable(
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(80.dp)
-                .clickable {
+                .clickable(
+                    interactionSource = MutableInteractionSource(),
+                    indication = null
+                ) {
                     expanded = !expanded
                 }
             )

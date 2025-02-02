@@ -32,7 +32,7 @@ class HomeScreenModel : ScreenModel, KoinComponent {
     val userName = mutableStateOf("Guest")
     val totalLent = mutableStateOf(0.0)
     val totalBorrowed = mutableStateOf(0.0)
-    private val allRecipients = mutableStateOf<List<RecipientViewItem>>(emptyList())
+    val allRecipients = mutableStateOf<List<RecipientViewItem>>(emptyList())
     val dataList = derivedStateOf {
         val query = searchText.value.lowercase().trim()
         if (query.isEmpty()) allRecipients.value

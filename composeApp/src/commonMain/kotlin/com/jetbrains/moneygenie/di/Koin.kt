@@ -18,6 +18,7 @@ import com.jetbrains.moneygenie.screens.recipient.editRecipients.EditRecipientsS
 import com.jetbrains.moneygenie.screens.settings.SettingsScreenModel
 import com.jetbrains.moneygenie.screens.settings.changePasscode.ChangePasscodeScreenModel
 import com.jetbrains.moneygenie.screens.settings.changeSecurityQuestion.ChangeSecurityQuestionScreenModel
+import com.jetbrains.moneygenie.screens.settings.webPage.WebViewScreenModel
 import com.jetbrains.moneygenie.screens.transactions.TransactionScreenModel
 import com.jetbrains.moneygenie.screens.transactions.addTransactions.AddTransactionScreenModel
 import io.ktor.client.HttpClient
@@ -73,6 +74,7 @@ val screenModelsModule = module {
     factoryOf(::ChangePasscodeScreenModel)
     factoryOf(::ChangeSecurityQuestionScreenModel)
     factoryOf(::TransactionScreenModel)
+    factoryOf(::WebViewScreenModel)
 }
 
 fun initKoin() {

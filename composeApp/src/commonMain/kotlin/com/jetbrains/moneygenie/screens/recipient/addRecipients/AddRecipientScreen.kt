@@ -161,7 +161,8 @@ class AddRecipientScreen(private val onBack: (shouldRefresh: Boolean) -> Unit) :
 
                     OweTypeChipGroup(
                         isFillMaxWidth = true,
-                        onSelectionChanged = { viewModel.updateOutstandingBalanceOwedBy(it.value) })
+                        selectedOption = viewModel.transactionType,
+                        onSelectionChanged = { viewModel.updateOutstandingBalanceOwedBy(it) })
 
                     VerticalSpace(12)
 

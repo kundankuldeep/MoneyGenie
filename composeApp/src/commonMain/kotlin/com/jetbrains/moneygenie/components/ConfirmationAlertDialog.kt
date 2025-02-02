@@ -4,6 +4,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.jetbrains.moneygenie.theme.Primary700
 
 /**
@@ -24,6 +25,7 @@ fun ShowConfirmationDialog(
     onDismiss: () -> Unit
 ) {
     AlertDialog(
+        containerColor = Color.White,
         onDismissRequest = onDismiss,
         title = { Text(data.title) },
         text = { Text(data.subTitle) },

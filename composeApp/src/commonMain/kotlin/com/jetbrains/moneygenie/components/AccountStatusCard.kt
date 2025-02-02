@@ -27,7 +27,11 @@ import kotlin.math.abs
  **/
 
 @Composable
-fun AccountStatusCard(amountLent: Double, amountBorrowed: Double) {
+fun AccountStatusCard(
+    amountLent: Double,
+    amountBorrowed: Double,
+    settledAccountText: String = "Account is Settled"
+) {
     val diffAmount = amountLent - amountBorrowed
     val statusColor = when {
         diffAmount > 0 -> Primary700
@@ -38,7 +42,7 @@ fun AccountStatusCard(amountLent: Double, amountBorrowed: Double) {
     val statusText = when {
         diffAmount > 0 -> "Receivable Amount"
         diffAmount < 0 -> "Balance Payable"
-        else -> "Account is Settled"
+        else -> settledAccountText
     }
 
     val statusIcon = when {
